@@ -1,0 +1,86 @@
+package com.liyunet.vo.user;
+
+/**
+ * Created by wuyunan on 2018/8/13.
+ */
+public class LoginVo {
+
+    private String picUrl;
+
+    private String id;
+
+    private String token;
+
+    private String blockId;
+
+    private String blockAddress;
+
+    private String identityCard;
+
+    private String account;
+
+    private String status;
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getBlockId() {
+        return blockId;
+    }
+
+    public void setBlockId(String blockId) {
+        this.blockId = blockId;
+    }
+
+    public String getBlockAddress() {
+        return blockAddress;
+    }
+
+    public void setBlockAddress(String blockAddress) {
+        this.blockAddress = blockAddress;
+    }
+
+    public String getIdentityCard() {
+        return identityCard;
+    }
+
+    public void setIdentityCard(String identityCard) {
+        this.identityCard = identityCard;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+}

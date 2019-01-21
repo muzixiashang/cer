@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liyunet.mapper.gameapiMapper.GameApiDemandOrderMapper">
+	<resultMap id="BaseResultMap" type="com.liyunet.domain.gameapi.GameApiDemandOrder">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="VARCHAR" />
+		<result column="demand_num" property="demandNum" jdbcType="INTEGER" />
+		<result column="game_order_num" property="gameOrderNum"
+			jdbcType="VARCHAR" />
+		<result column="_integral" property="integral" jdbcType="INTEGER" />
+		<result column="obj_id" property="objId" jdbcType="INTEGER" />
+		<result column="order_source" property="orderSource" jdbcType="INTEGER" />
+		<result column="pay_order_num" property="payOrderNum" jdbcType="VARCHAR" />
+		<result column="pay_total_money" property="payTotalMoney"
+			jdbcType="VARCHAR" />
+		<result column="pay_type" property="payType" jdbcType="INTEGER" />
+		<result column="product_name" property="productName" jdbcType="VARCHAR" />
+		<result column="product_price" property="productPrice"
+			jdbcType="VARCHAR" />
+		<result column="result_type" property="resultType" jdbcType="INTEGER" />
+		<result column="return_url" property="returnUrl" jdbcType="VARCHAR" />
+		<result column="send_msg_to_gamecompany" property="sendMsgToGamecompany"
+			jdbcType="INTEGER" />
+		<result column="shopping_num" property="shoppingNum" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="sync_time" property="syncTime" jdbcType="VARCHAR" />
+		<result column="trad_code" property="tradCode" jdbcType="VARCHAR" />
+		<result column="trad_msg" property="tradMsg" jdbcType="VARCHAR" />
+		<result column="trad_no" property="tradNo" jdbcType="VARCHAR" />
+		<result column="game_id" property="gameId" jdbcType="INTEGER" />
+		<result column="user_id" property="userId" jdbcType="INTEGER" />
+	</resultMap>
+	<resultMap id="ResultMapWithBLOBs" type="com.liyunet.domain.gameapi.GameApiDemandOrder"
+		extends="BaseResultMap">
+		<result column="product_desc" property="productDesc" jdbcType="LONGVARCHAR" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, create_time, demand_num, game_order_num, _integral, obj_id,
+		order_source, pay_order_num,
+		pay_total_money, pay_type, product_name, product_price, result_type, return_url,
+		send_msg_to_gamecompany, shopping_num, status, sync_time, trad_code,
+		trad_msg, trad_no,
+		game_id, user_id
+	</sql>
+	<sql id="Blob_Column_List">
+		product_desc
+	</sql>
+	<select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs"
+		parameterType="com.liyunet.domain.gameapi.GameApiDemandOrderExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from game_api_demand_order
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.liyunet.domain.gameapi.GameApiDemandOrderExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from game_api_demand_order
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from game_api_demand_order
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from game_api_demand_order
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample"
+		parameterType="com.liyunet.domain.gameapi.GameApiDemandOrderExample">
+		delete from game_api_demand_order
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.liyunet.domain.gameapi.GameApiDemandOrder">
+		insert into game_api_demand_order (id, create_time, demand_num,
+		game_order_num, _integral, obj_id,
+		order_source, pay_order_num, pay_total_money,
+		pay_type, product_name, product_price,
+		result_type, return_url, send_msg_to_gamecompany,
+		shopping_num, status, sync_time,
+		trad_code, trad_msg, trad_no,
+		game_id, user_id, product_desc
+		)
+		values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR},
+		#{demandNum,jdbcType=INTEGER},
+		#{gameOrderNum,jdbcType=VARCHAR}, #{integral,jdbcType=INTEGER}, #{objId,jdbcType=INTEGER},
+		#{orderSource,jdbcType=INTEGER}, #{payOrderNum,jdbcType=VARCHAR},
+		#{payTotalMoney,jdbcType=VARCHAR},
+		#{payType,jdbcType=INTEGER}, #{productName,jdbcType=VARCHAR}, #{productPrice,jdbcType=VARCHAR},
+		#{resultType,jdbcType=INTEGER}, #{returnUrl,jdbcType=VARCHAR},
+		#{sendMsgToGamecompany,jdbcType=INTEGER},
+		#{shoppingNum,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+		#{syncTime,jdbcType=VARCHAR},
+		#{tradCode,jdbcType=VARCHAR}, #{tradMsg,jdbcType=VARCHAR}, #{tradNo,jdbcType=VARCHAR},
+		#{gameId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
+		#{productDesc,jdbcType=LONGVARCHAR}
+		)
+	</insert>
+
+	<!--insertOverride 重写插入方法 -->
+	<insert id="insertOverride" parameterType="com.liyunet.domain.hk.CoinHkUserProject"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into game_api_demand_order (id, create_time, demand_num,
+		game_order_num, _integral, obj_id,
+		order_source, pay_order_num, pay_total_money,
+		pay_type, product_name, product_price,
+		result_type, return_url, send_msg_to_gamecompany,
+		shopping_num, status, sync_time,
+		trad_code, trad_msg, trad_no,
+		game_id, user_id, product_desc
+		)
+		values (#{id,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR},
+		#{demandNum,jdbcType=INTEGER},
+		#{gameOrderNum,jdbcType=VARCHAR}, #{integral,jdbcType=INTEGER}, #{objId,jdbcType=INTEGER},
+		#{orderSource,jdbcType=INTEGER}, #{payOrderNum,jdbcType=VARCHAR},
+		#{payTotalMoney,jdbcType=VARCHAR},
+		#{payType,jdbcType=INTEGER}, #{productName,jdbcType=VARCHAR}, #{productPrice,jdbcType=VARCHAR},
+		#{resultType,jdbcType=INTEGER}, #{returnUrl,jdbcType=VARCHAR},
+		#{sendMsgToGamecompany,jdbcType=INTEGER},
+		#{shoppingNum,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+		#{syncTime,jdbcType=VARCHAR},
+		#{tradCode,jdbcType=VARCHAR}, #{tradMsg,jdbcType=VARCHAR}, #{tradNo,jdbcType=VARCHAR},
+		#{gameId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
+		#{productDesc,jdbcType=LONGVARCHAR}
+		)
+	</insert>
+
+	<insert id="insertSelective" parameterType="com.liyunet.domain.gameapi.GameApiDemandOrder">
+		insert into game_api_demand_order
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="demandNum != null">
+				demand_num,
+			</if>
+			<if test="gameOrderNum != null">
+				game_order_num,
+			</if>
+			<if test="integral != null">
+				_integral,
+			</if>
+			<if test="objId != null">
+				obj_id,
+			</if>
+			<if test="orderSource != null">
+				order_source,
+			</if>
+			<if test="payOrderNum != null">
+				pay_order_num,
+			</if>
+			<if test="payTotalMoney != null">
+				pay_total_money,
+			</if>
+			<if test="payType != null">
+				pay_type,
+			</if>
+			<if test="productName != null">
+				product_name,
+			</if>
+			<if test="productPrice != null">
+				product_price,
+			</if>
+			<if test="resultType != null">
+				result_type,
+			</if>
+			<if test="returnUrl != null">
+				return_url,
+			</if>
+			<if test="sendMsgToGamecompany != null">
+				send_msg_to_gamecompany,
+			</if>
+			<if test="shoppingNum != null">
+				shopping_num,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="syncTime != null">
+				sync_time,
+			</if>
+			<if test="tradCode != null">
+				trad_code,
+			</if>
+			<if test="tradMsg != null">
+				trad_msg,
+			</if>
+			<if test="tradNo != null">
+				trad_no,
+			</if>
+			<if test="gameId != null">
+				game_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="productDesc != null">
+				product_desc,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="demandNum != null">
+				#{demandNum,jdbcType=INTEGER},
+			</if>
+			<if test="gameOrderNum != null">
+				#{gameOrderNum,jdbcType=VARCHAR},
+			</if>
+			<if test="integral != null">
+				#{integral,jdbcType=INTEGER},
+			</if>
+			<if test="objId != null">
+				#{objId,jdbcType=INTEGER},
+			</if>
+			<if test="orderSource != null">
+				#{orderSource,jdbcType=INTEGER},
+			</if>
+			<if test="payOrderNum != null">
+				#{payOrderNum,jdbcType=VARCHAR},
+			</if>
+			<if test="payTotalMoney != null">
+				#{payTotalMoney,jdbcType=VARCHAR},
+			</if>
+			<if test="payType != null">
+				#{payType,jdbcType=INTEGER},
+			</if>
+			<if test="productName != null">
+				#{productName,jdbcType=VARCHAR},
+			</if>
+			<if test="productPrice != null">
+				#{productPrice,jdbcType=VARCHAR},
+			</if>
+			<if test="resultType != null">
+				#{resultType,jdbcType=INTEGER},
+			</if>
+			<if test="returnUrl != null">
+				#{returnUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="sendMsgToGamecompany != null">
+				#{sendMsgToGamecompany,jdbcType=INTEGER},
+			</if>
+			<if test="shoppingNum != null">
+				#{shoppingNum,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="syncTime != null">
+				#{syncTime,jdbcType=VARCHAR},
+			</if>
+			<if test="tradCode != null">
+				#{tradCode,jdbcType=VARCHAR},
+			</if>
+			<if test="tradMsg != null">
+				#{tradMsg,jdbcType=VARCHAR},
+			</if>
+			<if test="tradNo != null">
+				#{tradNo,jdbcType=VARCHAR},
+			</if>
+			<if test="gameId != null">
+				#{gameId,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=INTEGER},
+			</if>
+			<if test="productDesc != null">
+				#{productDesc,jdbcType=LONGVARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample"
+		parameterType="com.liyunet.domain.gameapi.GameApiDemandOrderExample"
+		resultType="java.lang.Integer">
+		select count(*) from game_api_demand_order
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update game_api_demand_order
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.createTime != null">
+				create_time = #{record.createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="record.demandNum != null">
+				demand_num = #{record.demandNum,jdbcType=INTEGER},
+			</if>
+			<if test="record.gameOrderNum != null">
+				game_order_num = #{record.gameOrderNum,jdbcType=VARCHAR},
+			</if>
+			<if test="record.integral != null">
+				_integral = #{record.integral,jdbcType=INTEGER},
+			</if>
+			<if test="record.objId != null">
+				obj_id = #{record.objId,jdbcType=INTEGER},
+			</if>
+			<if test="record.orderSource != null">
+				order_source = #{record.orderSource,jdbcType=INTEGER},
+			</if>
+			<if test="record.payOrderNum != null">
+				pay_order_num = #{record.payOrderNum,jdbcType=VARCHAR},
+			</if>
+			<if test="record.payTotalMoney != null">
+				pay_total_money = #{record.payTotalMoney,jdbcType=VARCHAR},
+			</if>
+			<if test="record.payType != null">
+				pay_type = #{record.payType,jdbcType=INTEGER},
+			</if>
+			<if test="record.productName != null">
+				product_name = #{record.productName,jdbcType=VARCHAR},
+			</if>
+			<if test="record.productPrice != null">
+				product_price = #{record.productPrice,jdbcType=VARCHAR},
+			</if>
+			<if test="record.resultType != null">
+				result_type = #{record.resultType,jdbcType=INTEGER},
+			</if>
+			<if test="record.returnUrl != null">
+				return_url = #{record.returnUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="record.sendMsgToGamecompany != null">
+				send_msg_to_gamecompany =
+				#{record.sendMsgToGamecompany,jdbcType=INTEGER},
+			</if>
+			<if test="record.shoppingNum != null">
+				shopping_num = #{record.shoppingNum,jdbcType=INTEGER},
+			</if>
+			<if test="record.status != null">
+				status = #{record.status,jdbcType=INTEGER},
+			</if>
+			<if test="record.syncTime != null">
+				sync_time = #{record.syncTime,jdbcType=VARCHAR},
+			</if>
+			<if test="record.tradCode != null">
+				trad_code = #{record.tradCode,jdbcType=VARCHAR},
+			</if>
+			<if test="record.tradMsg != null">
+				trad_msg = #{record.tradMsg,jdbcType=VARCHAR},
+			</if>
+			<if test="record.tradNo != null">
+				trad_no = #{record.tradNo,jdbcType=VARCHAR},
+			</if>
+			<if test="record.gameId != null">
+				game_id = #{record.gameId,jdbcType=INTEGER},
+			</if>
+			<if test="record.userId != null">
+				user_id = #{record.userId,jdbcType=INTEGER},
+			</if>
+			<if test="record.productDesc != null">
+				product_desc = #{record.productDesc,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExampleWithBLOBs" parameterType="map">
+		update game_api_demand_order
+		set id = #{record.id,jdbcType=INTEGER},
+		create_time = #{record.createTime,jdbcType=VARCHAR},
+		demand_num = #{record.demandNum,jdbcType=INTEGER},
+		game_order_num = #{record.gameOrderNum,jdbcType=VARCHAR},
+		_integral = #{record.integral,jdbcType=INTEGER},
+		obj_id = #{record.objId,jdbcType=INTEGER},
+		order_source = #{record.orderSource,jdbcType=INTEGER},
+		pay_order_num = #{record.payOrderNum,jdbcType=VARCHAR},
+		pay_total_money = #{record.payTotalMoney,jdbcType=VARCHAR},
+		pay_type = #{record.payType,jdbcType=INTEGER},
+		product_name = #{record.productName,jdbcType=VARCHAR},
+		product_price = #{record.productPrice,jdbcType=VARCHAR},
+		result_type = #{record.resultType,jdbcType=INTEGER},
+		return_url = #{record.returnUrl,jdbcType=VARCHAR},
+		send_msg_to_gamecompany = #{record.sendMsgToGamecompany,jdbcType=INTEGER},
+		shopping_num = #{record.shoppingNum,jdbcType=INTEGER},
+		status = #{record.status,jdbcType=INTEGER},
+		sync_time = #{record.syncTime,jdbcType=VARCHAR},
+		trad_code = #{record.tradCode,jdbcType=VARCHAR},
+		trad_msg = #{record.tradMsg,jdbcType=VARCHAR},
+		trad_no = #{record.tradNo,jdbcType=VARCHAR},
+		game_id = #{record.gameId,jdbcType=INTEGER},
+		user_id = #{record.userId,jdbcType=INTEGER},
+		product_desc = #{record.productDesc,jdbcType=LONGVARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update game_api_demand_order
+		set id = #{record.id,jdbcType=INTEGER},
+		create_time = #{record.createTime,jdbcType=VARCHAR},
+		demand_num = #{record.demandNum,jdbcType=INTEGER},
+		game_order_num = #{record.gameOrderNum,jdbcType=VARCHAR},
+		_integral = #{record.integral,jdbcType=INTEGER},
+		obj_id = #{record.objId,jdbcType=INTEGER},
+		order_source = #{record.orderSource,jdbcType=INTEGER},
+		pay_order_num = #{record.payOrderNum,jdbcType=VARCHAR},
+		pay_total_money = #{record.payTotalMoney,jdbcType=VARCHAR},
+		pay_type = #{record.payType,jdbcType=INTEGER},
+		product_name = #{record.productName,jdbcType=VARCHAR},
+		product_price = #{record.productPrice,jdbcType=VARCHAR},
+		result_type = #{record.resultType,jdbcType=INTEGER},
+		return_url = #{record.returnUrl,jdbcType=VARCHAR},
+		send_msg_to_gamecompany = #{record.sendMsgToGamecompany,jdbcType=INTEGER},
+		shopping_num = #{record.shoppingNum,jdbcType=INTEGER},
+		status = #{record.status,jdbcType=INTEGER},
+		sync_time = #{record.syncTime,jdbcType=VARCHAR},
+		trad_code = #{record.tradCode,jdbcType=VARCHAR},
+		trad_msg = #{record.tradMsg,jdbcType=VARCHAR},
+		trad_no = #{record.tradNo,jdbcType=VARCHAR},
+		game_id = #{record.gameId,jdbcType=INTEGER},
+		user_id = #{record.userId,jdbcType=INTEGER}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.liyunet.domain.gameapi.GameApiDemandOrder">
+		update game_api_demand_order
+		<set>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="demandNum != null">
+				demand_num = #{demandNum,jdbcType=INTEGER},
+			</if>
+			<if test="gameOrderNum != null">
+				game_order_num = #{gameOrderNum,jdbcType=VARCHAR},
+			</if>
+			<if test="integral != null">
+				_integral = #{integral,jdbcType=INTEGER},
+			</if>
+			<if test="objId != null">
+				obj_id = #{objId,jdbcType=INTEGER},
+			</if>
+			<if test="orderSource != null">
+				order_source = #{orderSource,jdbcType=INTEGER},
+			</if>
+			<if test="payOrderNum != null">
+				pay_order_num = #{payOrderNum,jdbcType=VARCHAR},
+			</if>
+			<if test="payTotalMoney != null">
+				pay_total_money = #{payTotalMoney,jdbcType=VARCHAR},
+			</if>
+			<if test="payType != null">
+				pay_type = #{payType,jdbcType=INTEGER},
+			</if>
+			<if test="productName != null">
+				product_name = #{productName,jdbcType=VARCHAR},
+			</if>
+			<if test="productPrice != null">
+				product_price = #{productPrice,jdbcType=VARCHAR},
+			</if>
+			<if test="resultType != null">
+				result_type = #{resultType,jdbcType=INTEGER},
+			</if>
+			<if test="returnUrl != null">
+				return_url = #{returnUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="sendMsgToGamecompany != null">
+				send_msg_to_gamecompany = #{sendMsgToGamecompany,jdbcType=INTEGER},
+			</if>
+			<if test="shoppingNum != null">
+				shopping_num = #{shoppingNum,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="syncTime != null">
+				sync_time = #{syncTime,jdbcType=VARCHAR},
+			</if>
+			<if test="tradCode != null">
+				trad_code = #{tradCode,jdbcType=VARCHAR},
+			</if>
+			<if test="tradMsg != null">
+				trad_msg = #{tradMsg,jdbcType=VARCHAR},
+			</if>
+			<if test="tradNo != null">
+				trad_no = #{tradNo,jdbcType=VARCHAR},
+			</if>
+			<if test="gameId != null">
+				game_id = #{gameId,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=INTEGER},
+			</if>
+			<if test="productDesc != null">
+				product_desc = #{productDesc,jdbcType=LONGVARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="com.liyunet.domain.gameapi.GameApiDemandOrder">
+		update game_api_demand_order
+		set create_time = #{createTime,jdbcType=VARCHAR},
+		demand_num = #{demandNum,jdbcType=INTEGER},
+		game_order_num = #{gameOrderNum,jdbcType=VARCHAR},
+		_integral = #{integral,jdbcType=INTEGER},
+		obj_id = #{objId,jdbcType=INTEGER},
+		order_source = #{orderSource,jdbcType=INTEGER},
+		pay_order_num = #{payOrderNum,jdbcType=VARCHAR},
+		pay_total_money = #{payTotalMoney,jdbcType=VARCHAR},
+		pay_type = #{payType,jdbcType=INTEGER},
+		product_name = #{productName,jdbcType=VARCHAR},
+		product_price = #{productPrice,jdbcType=VARCHAR},
+		result_type = #{resultType,jdbcType=INTEGER},
+		return_url = #{returnUrl,jdbcType=VARCHAR},
+		send_msg_to_gamecompany = #{sendMsgToGamecompany,jdbcType=INTEGER},
+		shopping_num = #{shoppingNum,jdbcType=INTEGER},
+		status = #{status,jdbcType=INTEGER},
+		sync_time = #{syncTime,jdbcType=VARCHAR},
+		trad_code = #{tradCode,jdbcType=VARCHAR},
+		trad_msg = #{tradMsg,jdbcType=VARCHAR},
+		trad_no = #{tradNo,jdbcType=VARCHAR},
+		game_id = #{gameId,jdbcType=INTEGER},
+		user_id = #{userId,jdbcType=INTEGER},
+		product_desc = #{productDesc,jdbcType=LONGVARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.liyunet.domain.gameapi.GameApiDemandOrder">
+		update game_api_demand_order
+		set create_time = #{createTime,jdbcType=VARCHAR},
+		demand_num = #{demandNum,jdbcType=INTEGER},
+		game_order_num = #{gameOrderNum,jdbcType=VARCHAR},
+		_integral = #{integral,jdbcType=INTEGER},
+		obj_id = #{objId,jdbcType=INTEGER},
+		order_source = #{orderSource,jdbcType=INTEGER},
+		pay_order_num = #{payOrderNum,jdbcType=VARCHAR},
+		pay_total_money = #{payTotalMoney,jdbcType=VARCHAR},
+		pay_type = #{payType,jdbcType=INTEGER},
+		product_name = #{productName,jdbcType=VARCHAR},
+		product_price = #{productPrice,jdbcType=VARCHAR},
+		result_type = #{resultType,jdbcType=INTEGER},
+		return_url = #{returnUrl,jdbcType=VARCHAR},
+		send_msg_to_gamecompany = #{sendMsgToGamecompany,jdbcType=INTEGER},
+		shopping_num = #{shoppingNum,jdbcType=INTEGER},
+		status = #{status,jdbcType=INTEGER},
+		sync_time = #{syncTime,jdbcType=VARCHAR},
+		trad_code = #{tradCode,jdbcType=VARCHAR},
+		trad_msg = #{tradMsg,jdbcType=VARCHAR},
+		trad_no = #{tradNo,jdbcType=VARCHAR},
+		game_id = #{gameId,jdbcType=INTEGER},
+		user_id = #{userId,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	
+	<!--新加  -->
+<!-- 查订单list -->
+<select id="getOrderListBytoken" resultMap="BaseResultMap">
+select * from game_api_demand_order where user_id=#{userId} and status=1 order by create_time desc limit #{page},#{rows};
+
+</select>
+</mapper>

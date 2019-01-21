@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liyunet.mapper.community.BandingMapper">
+
+    <sql id="AssociatedAccount_sql">
+        id,uId,userId,AppName,AppUserAccount,createTime,token
+    </sql>
+    <sql id="user_info_sql">
+        id,uId,identityCard,blockAddress,userAccount,userPwd,phoneNum,email,headPicPath,createTime
+    </sql>
+    <sql id="full_Invitation_user_code_noid_columns">
+        code_,create_time,expire_time,used_,account_,`type_`,use_time,token,project
+    </sql>
+    <sql id="AntiAddiction_SQL">
+        id,userId,userName,identityCard,frontUrl,backUrl,state,rejectReason,createTime,successTime,updateTime,projectName,token,`level`
+    </sql>
+    <insert id="saveAssociatedAccount">
+        INSERT INTO associated_account(<include refid="AssociatedAccount_sql"/>)
+        VALUES (
+        #{id},
+        #{uId},
+        #{userId},
+        #{AppName},
+        #{AppUserAccount},
+        #{createTime},
+        #{token}
+        )
+    </insert>
+    <insert id="saveInvitationCode">
+        INSERT INTO
+        invitation_user_code(<include refid="full_Invitation_user_code_noid_columns"/>)
+        VALUES (
+        #{code_},
+        #{create_time},
+        #{expire_time},
+        #{used_},
+        #{account_},
+        #{type_},
+        #{use_time},
+        #{token},
+        #{project}
+        )
+    </insert>
+    <insert id="saveAntiAddiction">
+        INSERT INTO antiaddiction(<include refid="AntiAddiction_SQL"/>)
+        VALUES (
+        #{id},
+        #{userId},
+        #{userName},
+        #{identityCard},
+        #{frontUrl},
+        #{backUrl},
+        #{state},
+        #{rejectReason},
+        #{createTime},
+        #{successTime},
+        #{updateTime},
+        #{projectName},
+        #{token},
+        #{level}
+        )
+    </insert>
+    <insert id="saveUserAccount" useGeneratedKeys="true" keyProperty="id" parameterType="com.liyunet.domain.UserInfo">
+        INSERT INTO user_info(<include refid="user_info_sql"/>)
+        VALUES (
+        #{id},
+        #{uId},
+        #{identityCard},
+        #{blockAddress},
+        #{userAccount},
+        #{userPwd},
+        #{phoneNum},
+        #{email},
+        #{headPicPath},
+        #{createTime}
+        )
+
+    </insert>
+    <update id="updateInvitationCode">
+        UPDATE invitation_user_code
+        <set>
+            <if test="used_ != null">used_ = #{used_}</if>
+            <if test="use_time != null">,use_time = #{use_time}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="updateUserInfoPwd">
+
+        UPDATE user_info
+        <set>
+            userPwd = #{userPwd}
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="updateAntiAddiction">
+        UPDATE antiaddiction
+        <set>
+            frontUrl = #{frontUrl},
+            backUrl = #{backUrl},
+            state = #{state},
+            `level` = #{level},
+            uId = #{uId}
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="updataBlockAddress">
+        UPDATE user_info
+        <set>
+            blockAddress = #{blockAddress}
+        </set>
+        WHERE id = #{id}
+    </update>
+    <select id="getAssociatedAccount" resultType="com.liyunet.domain.AssociatedAccount">
+
+        SELECT
+        <include refid="AssociatedAccount_sql"/>
+        FROM associated_account
+        WHERE AppUserAccount = #{account} AND AppName = #{project}
+
+    </select>
+    <select id="getAssociatedAccountByblockId" resultType="com.liyunet.domain.AssociatedAccount">
+
+        SELECT
+        <include refid="AssociatedAccount_sql"/>
+        FROM associated_account
+        WHERE AppName = #{project} AND userId = (SELECT uId FROM user_info WHERE userAccount = #{blockId} LIMIT 0,1)
+
+    </select>
+    <select id="getUserInfo" resultType="com.liyunet.domain.UserInfo">
+        SELECT
+        <include refid="user_info_sql"/>
+        FROM user_info
+        WHERE id = #{blockUserId}
+        LIMIT 0,1
+    </select>
+    <select id="getUserInfoByToken" resultType="com.liyunet.domain.UserInfo">
+        SELECT
+        <include refid="user_info_sql"/>
+        FROM user_info AS a
+        WHERE a.uId = (SELECT userId FROM associated_account WHERE token = #{userId} AND AppName = #{project})
+        LIMIT 0,1
+    </select>
+    <select id="getAssociatedAccountByToken" resultType="com.liyunet.domain.AssociatedAccount">
+        SELECT
+        <include refid="AssociatedAccount_sql"/>
+        FROM associated_account
+        WHERE token = #{userId} AND AppName = #{project}
+        LIMIT 0,1
+    </select>
+    <select id="getUserInfoByPhone" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM user_info
+        WHERE phoneNum = #{phone}
+    </select>
+    <select id="getUserInfoByTokenCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM associated_account
+        WHERE token = #{userId} AND AppName = #{project}
+        LIMIT 0,1
+    </select>
+    <select id="getByCodeByaccount" resultType="com.liyunet.domain.InvitationUserCode">
+        SELECT
+        id,
+        <include refid="full_Invitation_user_code_noid_columns"/>
+        FROM
+        invitation_user_code
+        <where>
+            `type_` = #{type}
+            <if test="code != null">AND code_ = #{code}</if>
+            <if test="phone != null">AND account_ = #{phone}</if>
+            <if test="project != null">AND project = #{project}</if>
+            <if test="userId != null">AND token = #{userId}</if>
+
+        </where>
+    </select>
+    <select id="getUserInfoByEmail" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM user_info
+        WHERE email = #{userAccount}
+    </select>
+    <select id="getUserInfoByIdentiy" resultType="com.liyunet.domain.UserInfo">
+        SELECT
+        <include refid="user_info_sql"/>
+        FROM user_info
+        WHERE identityCard = #{identityCard}
+    </select>
+    <select id="getAntiAddiction" resultType="com.liyunet.domain.AntiAddiction">
+
+        SELECT
+        <include refid="AntiAddiction_SQL"/>
+        FROM antiaddiction
+        WHERE identityCard = #{identityCard}
+        LIMIT 0,1
+
+    </select>
+    <select id="judgeBlockId" resultType="com.liyunet.domain.UserInfo">
+        SELECT
+        <include refid="user_info_sql"/>
+        FROM user_info
+        WHERE userAccount = #{blockId}
+        LIMIT 0,1
+    </select>
+    <select id="getUserInfoByPhoneOrIdentiyCard" resultType="com.liyunet.domain.UserInfo">
+        SELECT
+        <include refid="user_info_sql"/>
+        FROM user_info
+        WHERE phoneNum = #{phone} AND identityCard = #{identityCard}
+        LIMIT 0,1
+    </select>
+    <select id="getUserInfoById" resultType="com.liyunet.domain.UserInfo">
+        SELECT
+        <include refid="user_info_sql"/>
+        FROM user_info
+        WHERE id = #{userId} AND userAccount = #{blockId}
+        LIMIT 0,1
+    </select>
+    <select id="getAntiAddictionByName" resultType="com.liyunet.domain.AntiAddiction">
+        SELECT
+        <include refid="AntiAddiction_SQL"/>
+        FROM antiaddiction
+        WHERE identityCard = #{identityCard} AND userName = #{userName} AND userId = #{phone}
+        LIMIT 0,1
+
+    </select>
+    <select id="getUserInfoByUserId" resultType="com.liyunet.domain.UserInfo">
+        SELECT
+        <include refid="user_info_sql"/>
+        FROM user_info
+        WHERE phoneNum = #{userId}
+        LIMIT 0,1
+    </select>
+    <select id="getAssociatedAccountByUserId" resultType="com.liyunet.domain.AssociatedAccount">
+        SELECT
+        <include refid="AssociatedAccount_sql"/>
+        FROM associated_account
+        WHERE userId = #{uId}
+        LIMIT 0,1
+
+    </select>
+    <select id="getAssociatedAccountByuIdOrProject" resultType="com.liyunet.domain.AssociatedAccount">
+
+        SELECT
+        <include refid="AssociatedAccount_sql"/>
+        FROM associated_account
+        WHERE userId = #{userId} AND AppName = #{project}
+        LIMIT 0,1
+    </select>
+    <select id="getUserInfoByuId" resultType="com.liyunet.domain.UserInfo">
+        SELECT
+        <include refid="user_info_sql"/>
+        FROM user_info
+        WHERE uId = #{userId}
+        LIMIT 0,1
+    </select>
+</mapper>

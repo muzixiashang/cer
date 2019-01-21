@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liyunet.mapper.gameapiMapper.GameApiInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.liyunet.domain.gameapi.GameApiInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="api_secret" property="apiSecret" jdbcType="VARCHAR" />
+    <result column="app_id" property="appId" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="contact_" property="contact" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="VARCHAR" />
+    <result column="create_user" property="createUser" jdbcType="VARCHAR" />
+    <result column="mch_id" property="mchId" jdbcType="VARCHAR" />
+    <result column="order_" property="order" jdbcType="INTEGER" />
+    <result column="remark_" property="remark" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="login_url" property="loginUrl" jdbcType="VARCHAR" />
+    <result column="game_name" property="gameName" jdbcType="VARCHAR" />
+    <result column="callback_url" property="callbackUrl" jdbcType="VARCHAR" />
+    <result column="sort" property="sort" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, api_secret, app_id, company_name, contact_, createtime, create_user, mch_id, 
+    order_, remark_, status, login_url, game_name, callback_url, sort
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.liyunet.domain.gameapi.GameApiInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from game_api_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from game_api_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from game_api_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.liyunet.domain.gameapi.GameApiInfoExample" >
+    delete from game_api_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.liyunet.domain.gameapi.GameApiInfo" >
+    insert into game_api_info (id, api_secret, app_id, 
+      company_name, contact_, createtime, 
+      create_user, mch_id, order_, 
+      remark_, status, login_url, 
+      game_name, callback_url, sort
+      )
+    values (#{id,jdbcType=INTEGER}, #{apiSecret,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, 
+      #{companyName,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{mchId,jdbcType=VARCHAR}, #{order,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{loginUrl,jdbcType=VARCHAR}, 
+      #{gameName,jdbcType=VARCHAR}, #{callbackUrl,jdbcType=VARCHAR}, #{sort,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.liyunet.domain.gameapi.GameApiInfo" >
+    insert into game_api_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="apiSecret != null" >
+        api_secret,
+      </if>
+      <if test="appId != null" >
+        app_id,
+      </if>
+      <if test="companyName != null" >
+        company_name,
+      </if>
+      <if test="contact != null" >
+        contact_,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="mchId != null" >
+        mch_id,
+      </if>
+      <if test="order != null" >
+        order_,
+      </if>
+      <if test="remark != null" >
+        remark_,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="loginUrl != null" >
+        login_url,
+      </if>
+      <if test="gameName != null" >
+        game_name,
+      </if>
+      <if test="callbackUrl != null" >
+        callback_url,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="apiSecret != null" >
+        #{apiSecret,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null" >
+        #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="mchId != null" >
+        #{mchId,jdbcType=VARCHAR},
+      </if>
+      <if test="order != null" >
+        #{order,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="loginUrl != null" >
+        #{loginUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="gameName != null" >
+        #{gameName,jdbcType=VARCHAR},
+      </if>
+      <if test="callbackUrl != null" >
+        #{callbackUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.liyunet.domain.gameapi.GameApiInfoExample" resultType="java.lang.Integer" >
+    select count(*) from game_api_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update game_api_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.apiSecret != null" >
+        api_secret = #{record.apiSecret,jdbcType=VARCHAR},
+      </if>
+      <if test="record.appId != null" >
+        app_id = #{record.appId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.companyName != null" >
+        company_name = #{record.companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contact != null" >
+        contact_ = #{record.contact,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createUser != null" >
+        create_user = #{record.createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mchId != null" >
+        mch_id = #{record.mchId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.order != null" >
+        order_ = #{record.order,jdbcType=INTEGER},
+      </if>
+      <if test="record.remark != null" >
+        remark_ = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.loginUrl != null" >
+        login_url = #{record.loginUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gameName != null" >
+        game_name = #{record.gameName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.callbackUrl != null" >
+        callback_url = #{record.callbackUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update game_api_info
+    set id = #{record.id,jdbcType=INTEGER},
+      api_secret = #{record.apiSecret,jdbcType=VARCHAR},
+      app_id = #{record.appId,jdbcType=VARCHAR},
+      company_name = #{record.companyName,jdbcType=VARCHAR},
+      contact_ = #{record.contact,jdbcType=VARCHAR},
+      createtime = #{record.createtime,jdbcType=VARCHAR},
+      create_user = #{record.createUser,jdbcType=VARCHAR},
+      mch_id = #{record.mchId,jdbcType=VARCHAR},
+      order_ = #{record.order,jdbcType=INTEGER},
+      remark_ = #{record.remark,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=INTEGER},
+      login_url = #{record.loginUrl,jdbcType=VARCHAR},
+      game_name = #{record.gameName,jdbcType=VARCHAR},
+      callback_url = #{record.callbackUrl,jdbcType=VARCHAR},
+      sort = #{record.sort,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.liyunet.domain.gameapi.GameApiInfo" >
+    update game_api_info
+    <set >
+      <if test="apiSecret != null" >
+        api_secret = #{apiSecret,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        app_id = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null" >
+        company_name = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="contact != null" >
+        contact_ = #{contact,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="mchId != null" >
+        mch_id = #{mchId,jdbcType=VARCHAR},
+      </if>
+      <if test="order != null" >
+        order_ = #{order,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark_ = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="loginUrl != null" >
+        login_url = #{loginUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="gameName != null" >
+        game_name = #{gameName,jdbcType=VARCHAR},
+      </if>
+      <if test="callbackUrl != null" >
+        callback_url = #{callbackUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.liyunet.domain.gameapi.GameApiInfo" >
+    update game_api_info
+    set api_secret = #{apiSecret,jdbcType=VARCHAR},
+      app_id = #{appId,jdbcType=VARCHAR},
+      company_name = #{companyName,jdbcType=VARCHAR},
+      contact_ = #{contact,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      mch_id = #{mchId,jdbcType=VARCHAR},
+      order_ = #{order,jdbcType=INTEGER},
+      remark_ = #{remark,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      login_url = #{loginUrl,jdbcType=VARCHAR},
+      game_name = #{gameName,jdbcType=VARCHAR},
+      callback_url = #{callbackUrl,jdbcType=VARCHAR},
+      sort = #{sort,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

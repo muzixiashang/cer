@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liyunet.mapper.userMapper.PushUserMapper">
+
+    <sql id="full_user_info_columns">
+        id,uId,user_name,pwd_,nick_name,phone_num,email_,head_pic_path,create_time,user_sex,regester_type,user_desc
+    </sql>
+    <sql id="getPushUserInfoSql">
+        <if test="userId != null ">
+            id = #{userId}
+        </if>
+    </sql>
+    <sql id="invitation_codeSql">
+        code_,create_time,expire_time,used_,account_,type_,use_time
+
+    </sql>
+    <sql id="full_block_user_info_columns">
+        id,uId,user_name,pwd_,nick_name,phone_num,email_,head_pic_path,create_time,user_sex,regester_type,user_desc
+    </sql>
+    <sql id="userinfo_sql">
+        id,uId,identityCard,blockAddress,userAccount,userPwd,phoneNum,email,headPicPath
+    </sql>
+    <sql id="AssociatedAccount_sql">
+        id,uId,userId,AppName,AppUserAccount,createTime,token
+    </sql>
+    <insert id="savePushUserInfo" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.liyunet.domain.BlockUserInfo">
+        INSERT INTO block_user_info(<include refid="full_user_info_columns"/>)
+        VALUES (
+        #{id},
+        #{uId},
+        #{user_name},
+        #{pwd_},
+        #{nick_name},
+        #{phone_num},
+        #{email_},
+        #{head_pic_path},
+        #{create_time},
+        #{user_sex},
+        #{regester_type},
+        #{user_desc}
+        )
+    </insert>
+    <insert id="saveAssociatedAccount">
+        INSERT INTO associated_account(<include refid="AssociatedAccount_sql"/>)
+        VALUES (
+        #{id},
+        #{uId},
+        #{userId},
+        #{AppName},
+        #{AppUserAccount},
+        #{createTime},
+        #{token}
+        )
+    </insert>
+
+
+    <!--查询账号是否存在-->
+    <select id="getUserInfoByName" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        block_user_info
+        WHERE user_name = #{account}
+    </select>
+
+
+    <select id="getUserInfoByUserName" resultType="com.liyunet.domain.BlockUserInfo">
+        SELECT
+        <include refid="full_user_info_columns"/>
+        FROM
+        block_user_info
+        WHERE user_name = #{userName}
+
+    </select>
+
+    <select id="getUserInfoByVo" resultType="java.lang.Integer">
+        SELECT count(phone_num)
+        FROM block_user_info
+        WHERE phone_num = #{account}
+    </select>
+    <select id="getInvitationCode" resultType="com.liyunet.domain.InvitationCode">
+        SELECT id,
+        <include refid="invitation_codeSql"/>
+        FROM invitation_code
+        WHERE code_ = #{code} AND account_ = #{account} AND type_ = 3 AND used_ = 0
+        LIMIT 0,1
+    </select>
+    <select id="getUserInfoByAccount" resultType="com.liyunet.domain.UserInfo">
+        SELECT
+        <include refid="userinfo_sql"/>
+        FROM user_info
+        WHERE userAccount = #{username}
+        LIMIT 0,1
+    </select>
+    <select id="getBlockUserInfo" resultType="com.liyunet.domain.BlockUserInfo">
+        SELECT <include refid="full_block_user_info_columns"/>
+        FROM block_user_info
+        WHERE id = (SELECT token FROM associated_account WHERE userId = #{uId} AND AppName = 0)
+        LIMIT 0,1
+    </select>
+    <select id="getAntiAddiction" resultType="com.liyunet.domain.AssociatedAccount">
+
+        SELECT <include refid="AssociatedAccount_sql"/>
+        FROM associated_account
+        WHERE AppName = #{project} AND userId = #{uId}
+        LIMIT 0,1
+    </select>
+    <select id="getAssociatedAccount" resultType="com.liyunet.domain.AssociatedAccount">
+        SELECT <include refid="AssociatedAccount_sql"/>
+        FROM associated_account
+        WHERE AppName = #{type} AND token = #{id}
+        LIMIT 0,1
+
+    </select>
+
+</mapper>

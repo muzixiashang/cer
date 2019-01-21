@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml</param-value>
+    </context-param>
+
+    <filter>
+        <filter-name>HttpPutFormContentFilter</filter-name>
+        <filter-class>com.liyunet.web.filter.HttpDeleteFormContentFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>HttpPutFormContentFilter</filter-name>
+        <servlet-name>springMVC</servlet-name>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+    <!-- 解决跨域问题 -->
+    <filter>
+        <filter-name>corsFilter</filter-name>
+        <async-supported>true</async-supported>
+
+        <filter-class>com.liyunet.web.filter.CorsFilter</filter-class>
+        <init-param>
+            <param-name>allowOrigin</param-name>
+            <param-value>http://dapp.timetreaty.org,http://testdapp.timetreaty.org,http://testwallet.liyuyouxi.com,http://192.168.101.118:8080,http://luckytoken.net,http://testlottery.liyuyouxi.com,http://wallet.timetreaty.org,http://localhost:8080,http://testeggtx.liyuyouxi.com,http://192.168.0.8:8080,http://egg.liyugame.com,http://testegg.liyuyouxi.com,http://block.liyugame.com,http://testorg.liyugame.com,http://block.timetreaty.com,http://block.liyugame.com,http://block.timetreaty.org,http://119.28.102.108:8080,http://140.143.19.251:8080,,null,http://192.168.0.12:8080,http://192.168.0.81:8080,http://192.168.0.126:8080,http://192.168.101.8:8020,http://192.168.101.8:9090,http://localhost:63343,http://192.168.0.126,http://192.168.0.126:8020,http://192.168.0.8,http://192.168.0.8:8020,http://www.timetreaty.com,http://www.timetreaty.org,www.timetreaty.org,www.timetreaty.com,119.28.102.108,http://119.28.102.108,timetreaty.org,http://timetreaty.org,timetreaty.com,http://timetreaty.com,http://www.timetreaty.info,timetreaty.info,http://timetreaty.info,coinsay.org,http://coinsay.org,http://www.coinsay.org</param-value>
+
+        </init-param>
+        <init-param>
+            <param-name>allowMethods</param-name>
+            <param-value>GET,POST,PUT,DELETE,OPTIONS,PATCH</param-value>
+        </init-param>
+        <init-param>
+            <param-name>allowCredentials</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <param-name>allowHeaders</param-name>
+            <param-value>x-requested-with,Content-Type,Token,From,Lan,Lysource,AppVersion</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>corsFilter</filter-name>
+        <servlet-name>springMVC</servlet-name>
+    </filter-mapping>
+
+
+    <servlet>
+        <servlet-name>springMVC</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:dispatcher-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>springMVC</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+
+
+</web-app>

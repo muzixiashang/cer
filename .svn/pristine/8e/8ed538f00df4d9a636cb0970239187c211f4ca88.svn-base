@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:task="http://www.springframework.org/schema/task"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context.xsd
+      	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+      http://www.springframework.org/schema/mvc
+      http://www.springframework.org/schema/mvc/spring-mvc.xsd
+      http://www.springframework.org/schema/aop
+	  http://www.springframework.org/schema/aop/spring-aop.xsd
+	  http://www.springframework.org/schema/task
+http://www.springframework.org/schema/task/spring-task-3.1.xsd ">
+
+    <context:component-scan base-package="com.liyunet">
+        <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.RestController"/>
+    </context:component-scan>
+
+	<!-- 引入属性文件  方案一   -->
+	<context:property-placeholder location="classpath:config.properties" />
+
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+		<property name="url" value="${jdbc_url}"/>
+		<property name="username" value="${jdbc_username}"/>
+		<property name="password" value="${jdbc_password}"/>
+		<property name="testOnBorrow" value="true"/>
+		<!-- max connection number -->
+		<property name="maxActive" value="50"/>
+		<property name="initialSize" value="3"/>
+		<!-- 最大空闲连接数-->
+		<property name="maxIdle" value="5"/>
+		<!-- 最大空闲连接数 30 seconds-->
+		<property name="maxWait" value="30000"/>
+		<property name="validationQuery" value="select 1 from dual"/>
+
+		<!-- 连接是否被空闲连接回收器进行检验 -->
+		<property name="testWhileIdle" value="true"/>
+		<!-- 每隔一分钟空闲链接回收器运行一次 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000"/>
+		<!-- 连接在池中保持空闲而不被空闲连接回收器线程回收的最小时间 -->
+		<property name="minEvictableIdleTimeMillis" value="1800000"/>
+		<!-- 在每次空闲连接回收器线程运行时检查的连接数量 -->
+		<property name="numTestsPerEvictionRun" value="10"/>
+	</bean>
+
+	<bean id="syncEndTimeTask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="syncEndTimeJob"></property>
+		<property name="targetMethod" value="start"></property>
+	</bean>
+
+	<bean id="syncEndTimeTigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="syncEndTimeTask"></property>
+		<property name="cronExpression" value="0/50 * * * * ?"></property>
+	</bean>
+
+	<bean id = "scheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="syncEndTimeTigger"/>
+			</list>
+		</property>
+	</bean>
+
+	<!--myBaits配置 -->
+	<bean id="transactionManager"
+		  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+		  p:dataSource-ref="dataSource"
+		  p:configLocation="classpath:mybatis-config.xml"
+		  p:mapperLocations="classpath*:mapper/**/*.xml">
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.liyunet"/>
+		<property name="annotationClass" value="com.liyunet.MybatisMapper"/>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+	</bean>
+
+	<!-- 通过计时器启动任务调度
+		ScheduleFactoryBean
+			setTriggers(Trigger[] ts)
+	-->
+    <context:annotation-config/>
+    <context:spring-configured/>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+
+
+</beans>  

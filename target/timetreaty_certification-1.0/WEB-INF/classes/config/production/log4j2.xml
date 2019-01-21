@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	 <Appenders>
+		<Console name="Console" target="SYSTEM_OUT">  
+			<PatternLayout pattern="%-5level %d{yyyy-MM-ddTHH:mm:ss.SSS} %msg%n" />
+		</Console>
+		<RollingFile name="operateLog" immediateFlush="true" 
+		      fileName="/data/logs/timetreaty_certification/operateLog/operateLog.log" filePattern="/data/logs/timetreaty_certification/operateLog/operateLog.%d{yyyy-MM-dd}.log" append="true">
+            <!--
+                %d{yyyy-MM-dd HH:mm:ss, SSS} : 日志生产时间
+                %p : 日志输出格式
+                %c : logger的名称
+                %m : 日志内容，即 logger.info("message")
+                %n : 换行符
+                %C : Java类名
+                %L : 日志输出所在行数
+                %M : 日志输出所在方法名
+                hostName : 本地机器名
+                hostAddress : 本地ip地址
+             -->
+            <PatternLayout charset="utf-8" pattern="%d{yyyy-MM-dd|HH:mm:ss}|%msg%xEx%n"/>
+            <Policies>
+	            <!-- 基于时间的触发策略。该策略主要是完成周期性的log文件封存工作。有两个参数：  
+	                interval，integer型，指定两次封存动作之间的时间间隔。单位:以日志的命名精度来确定单位，  
+			                    比如yyyy-MM-dd-HH 单位为小时，yyyy-MM-dd-HH-mm 单位为分钟  
+			                modulate，boolean型，说明是否对封存时间进行调制。若modulate=true，  
+			                    则封存时间将以0点为边界进行偏移计算。比如，modulate=true，interval=4hours，  
+			                    那么假设上次封存日志的时间为03:00，则下次封存日志的时间为04:00，  
+			                    之后的封存时间依次为08:00，12:00，16:00  
+	             -->  
+            	<TimeBasedTriggeringPolicy interval="7" modulate="true" />    
+        	</Policies>
+            <!-- <SizeBasedTriggeringPolicy size="2M"/> -->
+        </RollingFile>
+        
+        
+        <File name="IP_UPDATE_LOG" immediateFlush="true" fileName="/data/logs/timetreaty_certification/op/ipUpdate.log" >
+			<PatternLayout pattern="%d{yyyy-MM-ddTHH:mm:ss.SSS}\t%m%n" />
+		</File>
+	</Appenders>
+
+	<Loggers>
+		<Root level="DEBUG">
+			<AppenderRef ref="FILE" />
+		</Root>
+		
+		<Logger name="ipUpdate" level="INFO" additivity="false">
+			<AppenderRef ref="IP_UPDATE_LOG" />
+		</Logger>
+		
+		<Logger name = "bdindex" level="INFO" additivity="false">
+			<AppenderRef ref="Console"/>
+		</Logger>
+		
+		<Logger name="org.hibernate" level="INFO" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>	
+			
+		<Logger name="org.quartz" level="INFO" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>		
+		
+		<Logger name="org.springframework" level="INFO" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>	
+		
+		<Logger name="org.junit" level="INFO" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>	
+		
+		<Logger name="org.apache.http" level="INFO" additivity="false">
+			<AppenderRef ref="Console" />
+		</Logger>
+		
+		<Logger name="operateLog" level="ERROR" additivity="false">
+			<AppenderRef ref="operateLog" />
+		</Logger>
+		
+		<Logger name="exception" level="ERROR" additivity="false">
+			<AppenderRef ref="operateLog" />
+		</Logger>
+	</Loggers>
+	
+</Configuration>

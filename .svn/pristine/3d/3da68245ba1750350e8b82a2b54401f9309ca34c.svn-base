@@ -1,0 +1,198 @@
+package com.liyunet.service.impl;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.liyunet.common.constant.Constant;
+import com.liyunet.common.password.AES;
+import com.liyunet.common.password.MD5;
+import com.liyunet.common.pushToken.PushAuthHelper;
+import com.liyunet.common.util.IpResourceLocation;
+import com.liyunet.common.util.TokenUtil;
+import com.liyunet.common.util.UrlLoad;
+import com.liyunet.domain.*;
+import com.liyunet.exception.ServiceException;
+import com.liyunet.mapper.game_api.GameApiMapper;
+import com.liyunet.service.GameApiService;
+import com.liyunet.util.PushRefinedCalculation;
+import com.liyunet.vo.user.LuckyUserInfoVo;
+import com.liyunet.vo.user.PushUserInfoVo;
+import com.liyunet.vo.user.UserInfoVo;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.Cookie;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+/**
+ */
+
+@Service("gameApiService")
+@Transactional
+public class GameApiServiceImpl implements GameApiService {
+
+    private final GameApiMapper gameApiMapper;
+
+
+    @Autowired
+    public GameApiServiceImpl(GameApiMapper gameApiMapper) {
+        this.gameApiMapper = gameApiMapper;
+    }
+
+
+    @Override
+    public Object getKycGrade(String token, String id) {
+
+        String userId = TokenUtil.getUserId(token);
+
+        List<UserInfo> userInfoList = gameApiMapper.getUserInfo(userId);
+        if (userInfoList != null && userInfoList.size() > 0) {
+            UserInfo userInfo = userInfoList.get(0);
+            String userAccount = userInfo.getUserAccount();
+            if (!userAccount.equals(id)) {
+                throw ServiceException.userException("Id with Token does not match！", "id与Token不匹配!");
+            }
+            String identityCard = userInfo.getIdentityCard();
+            List<AntiAddiction> associatedAccountList = gameApiMapper.getAntiAddictionLevel(identityCard);
+            if (associatedAccountList != null && associatedAccountList.size() > 0) {
+                AntiAddiction antiAddiction = associatedAccountList.get(0);
+                String level = antiAddiction.getLevel();
+                if (level != null && !"".equals(level)) {
+                    return level;
+                } else {
+                    return 0;
+                }
+
+            } else {
+                return 0;
+            }
+
+
+        } else {
+            throw ServiceException.userException("Token expired or mistake！", "Token有误或过期!");
+        }
+
+
+    }
+
+    @Override
+    public Object getLuckyUserContent(String token) {
+        String userId = TokenUtil.getUserId(token);
+        List<UserInfo> userInfoList = gameApiMapper.getUserInfo(userId);
+        if (userInfoList != null && userInfoList.size() > 0) {
+            UserInfo dbEnpUser = userInfoList.get(0);
+            String jwt = PushAuthHelper.createJsonWebToken(dbEnpUser.getId(), "pc", TimeUnit.HOURS, Constant.COOKIE_EXPIRE_HOURS);
+            LuckyUserInfoVo vo = new LuckyUserInfoVo();
+            vo.setToken(jwt);
+            vo.setId(dbEnpUser.getUserAccount());
+            vo.setuId(dbEnpUser.getuId());
+            return vo;
+        }
+        return null;
+    }
+
+    @Override
+    public void tradingDeductions(Integer userId, GameMessage gameMessage, String blockId) {
+
+        List<UserInfo> userInfos = gameApiMapper.getUserInfo(userId + "");
+        if (userInfos == null || userInfos.size() < 1) {
+            throw ServiceException.userException("", "参数异常,扣费失败!");
+        }
+        UserInfo userInfo1 = userInfos.get(0);
+        if (!userInfo1.getUserAccount().equals(blockId)) {
+            throw ServiceException.userException("", "参数异常,扣费失败!");
+        }
+        String identityCard = userInfo1.getIdentityCard();
+        List<AntiAddiction> antiAddictionList = gameApiMapper.getAntiAddictionLevel(identityCard);
+        if (antiAddictionList == null || antiAddictionList.size() < 1) {
+            throw ServiceException.userException("", "未通过KYC2级认证,扣费失败!");
+        }
+        AntiAddiction antiAddiction = antiAddictionList.get(0);
+        String level = antiAddiction.getLevel();
+        if (!"2".equals(level)) {
+            throw ServiceException.userException("", "未通过KYC2级认证,扣费失败!");
+        }
+        List<UserInfo> userInfoList = gameApiMapper.getUserInfoByUserAccount("100000");
+        if (userInfoList == null || userInfoList.size() < 1) {
+            throw ServiceException.userException("", "参数异常,扣费失败!");
+        }
+        UserInfo userInfo = userInfoList.get(0);
+//        String blockAddress = userInfo.getBlockAddress();
+        gameMessage.setToUserAddress(userInfo.getId() + "");
+        gameMessage.setCreateTime(getCurrentTime());
+        String sign = gameMessage.getSign();
+        String timestampStr = gameMessage.getTimestampStr();
+        String mch_id = gameMessage.getMch_id();
+        String app_id = gameMessage.getApp_id();
+        String total_fee = gameMessage.getTotal_fee();
+
+        List<GameMerchantMessage> gameMerchantMessageList = gameApiMapper.getGameMerchantMessage(mch_id, app_id);
+        if (gameMerchantMessageList == null || gameMerchantMessageList.size() < 1) {
+            throw ServiceException.userException("", "参数异常,扣费失败!");
+        }
+        GameMerchantMessage gameMerchantMessage = gameMerchantMessageList.get(0);
+//        String secret_key = gameMerchantMessage.getSecret_key();
+        String encode = "";
+        encode = MD5.md5Java(mch_id + timestampStr);
+
+        if (!encode.equals(sign) || encode.equals("")) {
+            throw ServiceException.userException("", "交易异常,扣费失败!");
+        }
+        gameMessage.setUserId(userId);
+
+        String s = null;
+        double v = Double.parseDouble(total_fee);
+        if (v <= 0) {
+            throw ServiceException.userException("", "参数异常,扣费失败!");
+        }
+        double mul = PushRefinedCalculation.mul(10, v);
+        try {
+            String encode1 = URLEncoder.encode(AES.AESEncode("LYWH@#$!32", userId + ""), "UTF-8");
+            String encode2 = URLEncoder.encode(AES.AESEncode("LYWH@#$!32", userInfo.getId() + ""), "UTF-8");
+            String encode3 = URLEncoder.encode(AES.AESEncode("9$dz4Y33oy", mul + ""), "UTF-8");
+            String encode4 = URLEncoder.encode(AES.AESEncode("9$dz4Y33oy", "yobXT2ENRb" + timestampStr), "UTF-8");
+            s = UrlLoad.load(IpResourceLocation.TT_EGGWORLD_IP + "/ttc-eggworld/ttc/record",
+                    "openId=" + encode1 + "&muchMoney=" + encode3 + "&transactionType=32" + "&app_id=3360a88e4318896c9fe3e031e64541f9c176af67fa87634f&mch_id=yobXT2ENRb&timestampStr=" + timestampStr + "&sign=" + encode4 + "&toopenid=" + encode2 + "&poundageType=0" + "&poundage=0");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JSONObject jsonObject = JSON.parseObject(s);
+        String string = jsonObject.getString("state");
+        JSONObject jsonObject1 = JSON.parseObject(string);
+        String code = jsonObject1.getString("code");
+        if ("20000".equals(code)) {
+
+            gameMessage.setId(null);
+            gameMessage.setStatus(1);
+            int i = gameApiMapper.saveGameMessage(gameMessage);
+            if (i < 1) {
+                throw ServiceException.userException("", "交易异常,扣费失败!");
+            }
+
+        } else if ("20002".equals(code)) {
+
+            String msg = jsonObject1.getString("msg");
+            gameMessage.setStatus(0);
+            gameMessage.setReason(msg);
+            gameApiMapper.saveGameMessage(gameMessage);
+            throw ServiceException.userException("", msg);
+        }
+
+    }
+
+
+    //当前时间
+    public String getCurrentTime() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String format1 = format.format(new Date());
+        return format1;
+    }
+}

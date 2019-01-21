@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liyunet.mapper.userMapper.ApiRegAddressMapper">
+
+
+    <sql id="getByCodeSql">
+        <if test="code != null">code_ = #{code}</if>
+    </sql>
+    <sql id="full_Invitation_code_noid_columns">
+        code_,create_time,expire_time,used_,account_,`type_`,use_time
+    </sql>
+    <sql id="user_info_sql">
+        id,uId,identityCard,blockAddress,userAccount,userPwd,phoneNum,email,headPicPath
+    </sql>
+    <sql id="full_Invitation_code_columns">
+        id,code_,create_time,expire_time,used_,account_,`type_`,use_time
+    </sql>
+    <insert id="saveInvitation_code">
+        INSERT INTO
+        invitation_code(<include refid="full_Invitation_code_noid_columns"/>)
+        VALUES (
+        #{code_},
+        #{create_time},
+        #{expire_time},
+        #{used_},
+        #{account_},
+        #{type_},
+        #{use_time}
+        )
+    </insert>
+    <update id="updateUserInfo">
+        UPDATE user_info
+        <set>
+            email = #{email},
+            phoneNum = #{phoneNum}
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="updateInvitationCode">
+        UPDATE invitation_code
+        <set>
+            <if test="used_ != null">used_ = #{used_}</if>
+            <if test="use_time != null">,use_time = #{use_time}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="updateUserInfoPwd">
+        UPDATE user_info
+        <set>
+            userPwd = #{userPwd}
+        </set>
+        WHERE id = #{id}
+    </update>
+    <select id="getUserInfoByName" resultType="java.lang.Integer">
+        SELECT
+        COUNT(*)
+        FROM
+        user_info
+        WHERE user_name = #{account}
+    </select>
+    <select id="getByCode" resultType="java.lang.Integer">
+        SELECT
+        count(code_)
+        FROM
+        invitation_code
+        <where>
+            <include refid="getByCodeSql"/>
+        </where>
+    </select>
+    <select id="getUserInfoByToken" resultType="com.liyunet.domain.UserInfo">
+        SELECT
+        <include refid="user_info_sql"/>
+        FROM user_info AS a
+        WHERE a.uId = (SELECT userId FROM associated_account WHERE token = #{token} AND AppName = #{project})
+        LIMIT 0,1
+    </select>
+    <select id="getByCodeByaccount" resultType="com.liyunet.domain.InvitationCode">
+        SELECT
+        <include refid="full_Invitation_code_columns"/>
+        FROM
+        invitation_code
+        <where>
+            <if test="code != null">code_ = #{code}</if>
+            <if test="email != null">AND account_ = #{email}</if>
+            AND type_ = #{type}
+        </where>
+        ORDER BY id DESC
+        LIMIT 0,1
+    </select>
+    <select id="getUserinfoByPhone" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM user_info
+        WHERE phoneNum = #{phone}
+    </select>
+    <select id="getUserinfoByemail" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM user_info
+        WHERE email = #{email}
+    </select>
+</mapper>

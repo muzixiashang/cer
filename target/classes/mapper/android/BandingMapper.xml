@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liyunet.mapper.android.AndroidMapper">
+
+    <sql id="user_info_sql">
+        id,uId,identityCard,blockAddress,userAccount,userPwd,phoneNum,email,headPicPath,createTime,fundPwd
+    </sql>
+    <sql id="AssociatedAccount_sql">
+        id,uId,userId,AppName,AppUserAccount,createTime,token
+    </sql>
+    <sql id="Announcement_sql">
+        id,uId,userId,title,Content,createTime,status,hot
+    </sql>
+    <sql id="UserAddress_sql">
+        id,uId,userId,address,`type`,currency,remark,createTime,updateTime,blockId,addressName
+    </sql>
+    <sql id="getByCodeSql">
+        <if test="code != null">code_ = #{code}</if>
+    </sql>
+    <sql id="full_Invitation_code_noid_columns">
+        code_,create_time,expire_time,used_,account_,`type_`,use_time
+    </sql>
+    <sql id="full_Invitation_code_columns">
+        id,code_,create_time,expire_time,used_,account_,`type_`,use_time
+    </sql>
+    <sql id="AntiAddiction_SQL">
+        id,userId,userName,identityCard,frontUrl,backUrl,state,rejectReason,createTime,successTime,updateTime,projectName,token,`level`,uId
+    </sql>
+    <sql id="APPditchId_sql">
+        id,uId,ditchId,url,createTime,version,versionNumber,minVersion,minVersionNumber,`type`,status,updateStatus
+    </sql>
+    <sql id="APPUpdateContent">
+        id,versionNumber,content
+    </sql>
+    <sql id="APPUpdateCondition_sql">
+        id,`type`,versionNumber,ditchId,`condition`
+    </sql>
+    <sql id="APPUserPreciseAddress_sql">
+        id,userId,longitude,latitude
+    </sql>
+    <sql id="AppUserMessage_sql">
+        id,phoneModel,phoneVersionNumber,address,ditchId,blockId,appVersion,longitude,latitude,userId,`type`
+    </sql>
+    <sql id="AndroidDownload_sql">
+        id,createTime,downloadNum
+    </sql>
+    <sql id="android_login">
+        id,blockId,createTime
+    </sql>
+    <insert id="saveAnnouncementRead">
+        INSERT INTO announcement_read(id,isRead,uId,userId)
+        VALUES
+        (
+        #{id},
+        #{isRead},
+        #{uId},
+        #{userId}
+        )
+
+    </insert>
+    <insert id="saveUserAddress">
+        INSERT INTO user_address(<include refid="UserAddress_sql"/>)
+        VALUES (
+        #{id},
+        #{uId},
+        #{userId},
+        #{address},
+        #{type},
+        #{currency},
+        #{remark},
+        #{createTime},
+        #{updateTime},
+        #{blockId},
+        #{addressName}
+        )
+
+    </insert>
+    <insert id="saveInvitation_code">
+        INSERT INTO
+        invitation_code(<include refid="full_Invitation_code_noid_columns"/>)
+        VALUES (
+        #{code_},
+        #{create_time},
+        #{expire_time},
+        #{used_},
+        #{account_},
+        #{type_},
+        #{use_time}
+        )
+    </insert>
+    <insert id="saveAPPUserPreciseAddress">
+      INSERT INTO app_user_precise_address(<include refid="APPUserPreciseAddress_sql"/>)
+      VALUES (
+        #{id},
+        #{userId},
+        #{longitude},
+        #{latitude}
+        )
+
+    </insert>
+    <insert id="insertAppUserMessage">
+        INSERT INTO app_user_message(<include refid="AppUserMessage_sql"/>)
+        VALUES (
+        #{id},
+        #{phoneModel},
+        #{phoneVersionNumber},
+        #{address},
+        #{ditchId},
+        #{blockId},
+        #{appVersion},
+        #{longitude},
+        #{latitude},
+        #{userId},
+        #{type}
+        )
+
+    </insert>
+    <insert id="saveAndroidDownload">
+        INSERT INTO android_download(<include refid="AndroidDownload_sql"/>)
+        VALUES (
+        #{id},
+        #{createTime},
+        #{downloadNum}
+        )
+    </insert>
+    <insert id="saveAndroidLogin">
+        INSERT INTO android_login(<include refid="android_login"/>)
+        VALUES (
+        #{id},
+        #{blockId},
+        #{createTime}
+        )
+
+    </insert>
+    <update id="updateAddress">
+        UPDATE user_address
+        <set>
+            uId = #{uId},
+            userId = #{userId},
+            address = #{address},
+            `type` = #{type},
+            currency = #{currency},
+            remark = #{remark},
+            createTime = #{createTime},
+            updateTime = #{updateTime},
+            blockId = #{blockId},
+            addressName = #{addressName}
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="updateInvitationCode">
+        UPDATE invitation_code
+        <set>
+            <if test="used_ != null">used_ = #{used_}</if>
+            <if test="use_time != null">,use_time = #{use_time}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="updateUserInfoFundPwd">
+        UPDATE user_info
+        <set>
+            fundPwd = #{fundPwd}
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="updateUserInfoPwd">
+        UPDATE user_info
+        <set>
+            userPwd = #{userPwd}
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="updateAppUserMessage">
+        UPDATE app_user_message
+        <set>
+            phoneModel = #{phoneModel},
+            phoneVersionNumber = #{phoneVersionNumber},
+            address = #{address},
+            ditchId = #{ditchId},
+            blockId = #{blockId},
+            appVersion = #{appVersion},
+            longitude = #{longitude},
+            latitude = #{latitude},
+            userId = #{userId},
+            `type` = #{type}
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="updateAndroidDownload">
+        UPDATE android_download
+        <set>
+            downloadNum = #{downloadNum}
+        </set>
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteUserAddress">
+        DELETE
+        FROM user_address
+        WHERE uId = #{id}
+
+    </delete>
+    <select id="getuserInfoById" resultType="com.liyunet.domain.UserInfo">
+
+        SELECT
+        <include refid="user_info_sql"/>
+        FROM user_info
+        WHERE id = #{userId}
+        LIMIT 0,1
+
+    </select>
+    <select id="getAssociatedAccount" resultType="com.liyunet.domain.AssociatedAccount">
+        SELECT
+        <include refid="AssociatedAccount_sql"/>
+        FROM associated_account
+        WHERE userId = #{userId}
+    </select>
+    
+    
+    <select id="getAssociatedAccountnew" resultType="com.liyunet.domain.AssociatedAccount">
+        SELECT
+        <include refid="AssociatedAccount_sql"/>
+        FROM associated_account
+        WHERE userId = #{userId}
+    </select>
+    
+    
+    
+    <select id="getAnnouncement" resultType="com.liyunet.domain.Announcement">
+        SELECT
+        <include refid="Announcement_sql"/>
+        FROM announcement
+        WHERE status = 1
+        ORDER BY createTime DESC
+        LIMIT #{page},#{row}
+    </select>
+    <select id="getAnnouncementRead" resultType="com.liyunet.domain.AnnouncementRead">
+        SELECT id,isRead,uId,userId
+        FROM announcement_read
+        WHERE uId = #{uId} AND userId = #{userId}
+        LIMIT 0,1
+    </select>
+    <select id="getAnnouncementById" resultType="com.liyunet.domain.Announcement">
+        SELECT
+        <include refid="Announcement_sql"/>
+        FROM announcement
+        WHERE uId = #{id}
+        LIMIT 0,1
+    </select>
+    <select id="getUserAddress" resultType="com.liyunet.domain.UserAddress">
+        SELECT
+        <include refid="UserAddress_sql"/>
+        FROM user_address
+        WHERE userId = #{uId} AND `type` = #{type}
+        LIMIT #{page},#{row}
+    </select>
+    <select id="getUserAddressById" resultType="com.liyunet.domain.UserAddress">
+        SELECT
+        <include refid="UserAddress_sql"/>
+        FROM user_address
+        WHERE userId = #{uId} AND uId = #{id}
+        LIMIT 0,1
+
+    </select>
+    <select id="getByCode" resultType="java.lang.Integer">
+        SELECT
+        count(code_)
+        FROM
+        invitation_code
+        <where>
+            <include refid="getByCodeSql"/>
+        </where>
+    </select>
+    <select id="getByCodeByaccount" resultType="com.liyunet.domain.InvitationCode">
+        SELECT
+        <include refid="full_Invitation_code_columns"/>
+        FROM
+        invitation_code
+        <where>
+            <if test="code != null">code_ = #{code}</if>
+            <if test="email != null">AND account_ = #{email}</if>
+            AND type_ = #{type}
+        </where>
+        ORDER BY id DESC
+        LIMIT 0,1
+    </select>
+    <select id="getUserInfoByToken" resultType="com.liyunet.domain.UserInfo">
+        SELECT
+        <include refid="user_info_sql"/>
+        FROM user_info AS a
+        WHERE a.uId = (SELECT userId FROM associated_account WHERE token = #{token} AND AppName = #{project})
+        LIMIT 0,1
+    </select>
+    <select id="getAssociatedAccountByUserIdAndAppName" resultType="com.liyunet.domain.AssociatedAccount">
+        SELECT
+        <include refid="AssociatedAccount_sql"/>
+        FROM associated_account
+        WHERE userId = #{uId} AND AppName = #{project}
+        LIMIT 0,1
+    </select>
+    <select id="selectAddress" resultType="com.liyunet.domain.UserAddress">
+        SELECT
+        <include refid="UserAddress_sql"/>
+        FROM user_address
+        WHERE blockId = #{blockId} AND `type` = 0
+        LIMIT #{page},#{row}
+    </select>
+    <select id="getUserInfoByBlockId" resultType="com.liyunet.domain.UserInfo">
+        SELECT
+        <include refid="user_info_sql"/>
+        FROM user_info
+        WHERE userAccount = #{blockId}
+        LIMIT 0,1
+    </select>
+    <select id="getAntiAddiction" resultType="com.liyunet.domain.AntiAddiction">
+        SELECT
+        <include refid="AntiAddiction_SQL"/>
+        FROM antiaddiction
+        WHERE identityCard = #{identityCard}
+        LIMIT 0,1
+    </select>
+    <select id="getAPPditchId" resultType="com.liyunet.domain.APPditchId">
+        SELECT <include refid="APPditchId_sql"/>
+        FROM app_ditchid
+        WHERE ditchId = #{ditchId} AND `type` = #{type}
+        ORDER BY id DESC
+        LIMIT 0,1
+    </select>
+
+    <select id="getAPPUpdateContent" resultType="com.liyunet.domain.APPUpdateContent">
+        SELECT <include refid="APPUpdateContent"/>
+        FROM app_update_content
+        WHERE versionNumber = #{version}
+
+    </select>
+    <select id="getAPPUpdateCondition" resultType="com.liyunet.domain.APPUpdateCondition">
+        SELECT <include refid="APPUpdateCondition_sql"/>
+        FROM app_update_condition
+        WHERE versionNumber = #{version}
+    </select>
+    <select id="getAPPditchIdByDitchId" resultType="com.liyunet.domain.APPditchId">
+        SELECT <include refid="APPditchId_sql"/>
+        FROM app_ditchid
+        WHERE ditchId = #{ditchId}
+        LIMIT 0,1
+
+    </select>
+    <select id="getAppUserMessage" resultType="com.liyunet.domain.AppUserMessage">
+        SELECT <include refid="AppUserMessage_sql"/>
+        FROM app_user_message
+        WHERE blockId = #{blockId}
+        LIMIT 0,1
+
+    </select>
+    <select id="getUserInfoByblockAddress" resultType="com.liyunet.domain.UserInfo">
+        SELECT
+        <include refid="user_info_sql"/>
+        FROM user_info
+        WHERE blockAddress = #{address}
+        LIMIT 0,1
+    </select>
+    <select id="getAndroidDownload" resultType="com.liyunet.domain.AndroidDownload">
+        SELECT <include refid="AndroidDownload_sql"/>
+        FROM android_download
+        WHERE createTime = #{format}
+        LIMIT 0,1
+    </select>
+    <select id="getAndroidLogin" resultType="com.liyunet.domain.AndroidLogin">
+        SELECT <include refid="android_login"/>
+        FROM android_login
+        WHERE blockId = #{blockId} AND createTime = #{createTime}
+        LIMIT 0,1
+    </select>
+</mapper>

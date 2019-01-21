@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liyunet.mapper.luckbagMapper.LuckbagUserinfoMapper">
+	<resultMap id="BaseResultMap" type="com.liyunet.domain.luckbag.LuckbagUserinfo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="to_userId" property="toUserid" jdbcType="INTEGER" />
+		<result column="lid" property="lid" jdbcType="INTEGER" />
+		<result column="createtime" property="createtime" jdbcType="VARCHAR" />
+		<result column="from_userId" property="fromUserid" jdbcType="INTEGER" />
+		<result column="num" property="num" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value}
+									and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, to_userId, lid, createtime, from_userId, num
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.liyunet.domain.luckbag.LuckbagUserinfoExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from luckbag_userinfo
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from luckbag_userinfo
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		luckbag_userinfo
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.liyunet.domain.luckbag.LuckbagUserinfoExample">
+		delete from luckbag_userinfo
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.liyunet.domain.luckbag.LuckbagUserinfo">
+		insert into luckbag_userinfo
+		(id, to_userId, lid,
+		createtime, from_userId, num
+		)
+		values
+		(#{id,jdbcType=INTEGER}, #{toUserid,jdbcType=INTEGER},
+		#{lid,jdbcType=INTEGER},
+		#{createtime,jdbcType=VARCHAR},
+		#{fromUserid,jdbcType=INTEGER}, #{num,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.liyunet.domain.luckbag.LuckbagUserinfo">
+		insert into luckbag_userinfo
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="toUserid != null">
+				to_userId,
+			</if>
+			<if test="lid != null">
+				lid,
+			</if>
+			<if test="createtime != null">
+				createtime,
+			</if>
+			<if test="fromUserid != null">
+				from_userId,
+			</if>
+			<if test="num != null">
+				num,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="toUserid != null">
+				#{toUserid,jdbcType=INTEGER},
+			</if>
+			<if test="lid != null">
+				#{lid,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=VARCHAR},
+			</if>
+			<if test="fromUserid != null">
+				#{fromUserid,jdbcType=INTEGER},
+			</if>
+			<if test="num != null">
+				#{num,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.liyunet.domain.luckbag.LuckbagUserinfoExample"
+		resultType="java.lang.Integer">
+		select count(*) from luckbag_userinfo
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update luckbag_userinfo
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.toUserid != null">
+				to_userId = #{record.toUserid,jdbcType=INTEGER},
+			</if>
+			<if test="record.lid != null">
+				lid = #{record.lid,jdbcType=INTEGER},
+			</if>
+			<if test="record.createtime != null">
+				createtime = #{record.createtime,jdbcType=VARCHAR},
+			</if>
+			<if test="record.fromUserid != null">
+				from_userId = #{record.fromUserid,jdbcType=INTEGER},
+			</if>
+			<if test="record.num != null">
+				num = #{record.num,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update luckbag_userinfo
+		set id = #{record.id,jdbcType=INTEGER},
+		to_userId = #{record.toUserid,jdbcType=INTEGER},
+		lid =
+		#{record.lid,jdbcType=INTEGER},
+		createtime =
+		#{record.createtime,jdbcType=VARCHAR},
+		from_userId =
+		#{record.fromUserid,jdbcType=INTEGER},
+		num =
+		#{record.num,jdbcType=VARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.liyunet.domain.luckbag.LuckbagUserinfo">
+		update luckbag_userinfo
+		<set>
+			<if test="toUserid != null">
+				to_userId = #{toUserid,jdbcType=INTEGER},
+			</if>
+			<if test="lid != null">
+				lid = #{lid,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				createtime = #{createtime,jdbcType=VARCHAR},
+			</if>
+			<if test="fromUserid != null">
+				from_userId = #{fromUserid,jdbcType=INTEGER},
+			</if>
+			<if test="num != null">
+				num = #{num,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.liyunet.domain.luckbag.LuckbagUserinfo">
+		update
+		luckbag_userinfo
+		set to_userId = #{toUserid,jdbcType=INTEGER},
+		lid =
+		#{lid,jdbcType=INTEGER},
+		createtime = #{createtime,jdbcType=VARCHAR},
+		from_userId = #{fromUserid,jdbcType=INTEGER},
+		num =
+		#{num,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="getaccepLuckBagHistory" resultMap="BaseResultMap">
+		select * from
+		luckbag_userinfo where to_userId=#{userId} order by createtime
+		desc
+		limit #{page},#{rows}
+
+	</select>
+
+	<select id="selectCountByuserId" resultType="Map">
+
+		select SUM(CAST(num AS DECIMAL(10,1))),count(*) from luckbag_userinfo where to_userId=#{userId}
+	</select>
+
+</mapper>

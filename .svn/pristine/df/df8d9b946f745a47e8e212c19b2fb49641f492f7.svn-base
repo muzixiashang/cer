@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liyunet.mapper.PushDealMapper">
+
+    <sql id="getPushUserInfoSql">
+        <if test="userId != null ">
+            id = #{userId}
+        </if>
+    </sql>
+    <!--//根据ID查询用户-->
+    <select id="getPushUserInfo" resultType="com.liyunet.domain.BlockUserInfo">
+      SELECT
+      id,uId,nick_name,phone_num
+      FROM
+      block_user_info
+      <where>
+        <include refid="getPushUserInfoSql"/>
+      </where>
+      LIMIT 0,1
+    </select>
+
+
+
+
+</mapper>

@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liyunet.mapper.chargeMapper.ChargeCoinInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.liyunet.domain.charge.ChargeCoinInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="coin_info" property="coinInfo" jdbcType="VARCHAR" />
+    <result column="coin_image" property="coinImage" jdbcType="VARCHAR" />
+    <result column="charge_address" property="chargeAddress" jdbcType="VARCHAR" />
+    <result column="QR_code" property="qrCode" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="home_image" property="homeImage" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, coin_info, coin_image, charge_address, QR_code, state, sort, home_image
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.liyunet.domain.charge.ChargeCoinInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from charge_coin_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from charge_coin_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from charge_coin_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.liyunet.domain.charge.ChargeCoinInfoExample" >
+    delete from charge_coin_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.liyunet.domain.charge.ChargeCoinInfo" >
+    insert into charge_coin_info (id, coin_info, coin_image, 
+      charge_address, QR_code, state, 
+      sort, home_image)
+    values (#{id,jdbcType=INTEGER}, #{coinInfo,jdbcType=VARCHAR}, #{coinImage,jdbcType=VARCHAR}, 
+      #{chargeAddress,jdbcType=VARCHAR}, #{qrCode,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
+      #{sort,jdbcType=INTEGER}, #{homeImage,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.liyunet.domain.charge.ChargeCoinInfo" >
+    insert into charge_coin_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="coinInfo != null" >
+        coin_info,
+      </if>
+      <if test="coinImage != null" >
+        coin_image,
+      </if>
+      <if test="chargeAddress != null" >
+        charge_address,
+      </if>
+      <if test="qrCode != null" >
+        QR_code,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="homeImage != null" >
+        home_image,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="coinInfo != null" >
+        #{coinInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="coinImage != null" >
+        #{coinImage,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeAddress != null" >
+        #{chargeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="qrCode != null" >
+        #{qrCode,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="homeImage != null" >
+        #{homeImage,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.liyunet.domain.charge.ChargeCoinInfoExample" resultType="java.lang.Integer" >
+    select count(*) from charge_coin_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update charge_coin_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.coinInfo != null" >
+        coin_info = #{record.coinInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.coinImage != null" >
+        coin_image = #{record.coinImage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chargeAddress != null" >
+        charge_address = #{record.chargeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qrCode != null" >
+        QR_code = #{record.qrCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=INTEGER},
+      </if>
+      <if test="record.homeImage != null" >
+        home_image = #{record.homeImage,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update charge_coin_info
+    set id = #{record.id,jdbcType=INTEGER},
+      coin_info = #{record.coinInfo,jdbcType=VARCHAR},
+      coin_image = #{record.coinImage,jdbcType=VARCHAR},
+      charge_address = #{record.chargeAddress,jdbcType=VARCHAR},
+      QR_code = #{record.qrCode,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=INTEGER},
+      sort = #{record.sort,jdbcType=INTEGER},
+      home_image = #{record.homeImage,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.liyunet.domain.charge.ChargeCoinInfo" >
+    update charge_coin_info
+    <set >
+      <if test="coinInfo != null" >
+        coin_info = #{coinInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="coinImage != null" >
+        coin_image = #{coinImage,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeAddress != null" >
+        charge_address = #{chargeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="qrCode != null" >
+        QR_code = #{qrCode,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="homeImage != null" >
+        home_image = #{homeImage,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.liyunet.domain.charge.ChargeCoinInfo" >
+    update charge_coin_info
+    set coin_info = #{coinInfo,jdbcType=VARCHAR},
+      coin_image = #{coinImage,jdbcType=VARCHAR},
+      charge_address = #{chargeAddress,jdbcType=VARCHAR},
+      QR_code = #{qrCode,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      home_image = #{homeImage,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liyunet.mapper.hkMapper.CoinHkProjetMapper" >
+  <resultMap id="BaseResultMap" type="com.liyunet.domain.hk.CoinHkProjet" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_cycle" property="projectCycle" jdbcType="VARCHAR" />
+    <result column="start_time" property="startTime" jdbcType="VARCHAR" />
+    <result column="end_time" property="endTime" jdbcType="VARCHAR" />
+    <result column="profit" property="profit" jdbcType="VARCHAR" />
+    <result column="min_quota" property="minQuota" jdbcType="VARCHAR" />
+    <result column="max_quota" property="maxQuota" jdbcType="VARCHAR" />
+    <result column="profit_num" property="profitNum" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="substitutesone" property="substitutesone" jdbcType="VARCHAR" />
+    <result column="substitutestwo" property="substitutestwo" jdbcType="VARCHAR" />
+    <result column="dummy_num" property="dummyNum" jdbcType="INTEGER" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+    <result column="createtime" property="createtime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, project_name, project_cycle, start_time, end_time, profit, min_quota, max_quota, 
+    profit_num, state, status, substitutesone, substitutestwo, dummy_num, sort, createtime
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.liyunet.domain.hk.CoinHkProjetExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from coin_hk_projet
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from coin_hk_projet
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from coin_hk_projet
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.liyunet.domain.hk.CoinHkProjetExample" >
+    delete from coin_hk_projet
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.liyunet.domain.hk.CoinHkProjet" >
+    insert into coin_hk_projet (id, project_name, project_cycle, 
+      start_time, end_time, profit, 
+      min_quota, max_quota, profit_num, 
+      state, status, substitutesone, 
+      substitutestwo, dummy_num, sort, 
+      createtime)
+    values (#{id,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, #{projectCycle,jdbcType=VARCHAR}, 
+      #{startTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, #{profit,jdbcType=VARCHAR}, 
+      #{minQuota,jdbcType=VARCHAR}, #{maxQuota,jdbcType=VARCHAR}, #{profitNum,jdbcType=VARCHAR}, 
+      #{state,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{substitutesone,jdbcType=VARCHAR}, 
+      #{substitutestwo,jdbcType=VARCHAR}, #{dummyNum,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, 
+      #{createtime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.liyunet.domain.hk.CoinHkProjet" >
+    insert into coin_hk_projet
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="projectName != null" >
+        project_name,
+      </if>
+      <if test="projectCycle != null" >
+        project_cycle,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="profit != null" >
+        profit,
+      </if>
+      <if test="minQuota != null" >
+        min_quota,
+      </if>
+      <if test="maxQuota != null" >
+        max_quota,
+      </if>
+      <if test="profitNum != null" >
+        profit_num,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="substitutesone != null" >
+        substitutesone,
+      </if>
+      <if test="substitutestwo != null" >
+        substitutestwo,
+      </if>
+      <if test="dummyNum != null" >
+        dummy_num,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null" >
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectCycle != null" >
+        #{projectCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="profit != null" >
+        #{profit,jdbcType=VARCHAR},
+      </if>
+      <if test="minQuota != null" >
+        #{minQuota,jdbcType=VARCHAR},
+      </if>
+      <if test="maxQuota != null" >
+        #{maxQuota,jdbcType=VARCHAR},
+      </if>
+      <if test="profitNum != null" >
+        #{profitNum,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="substitutesone != null" >
+        #{substitutesone,jdbcType=VARCHAR},
+      </if>
+      <if test="substitutestwo != null" >
+        #{substitutestwo,jdbcType=VARCHAR},
+      </if>
+      <if test="dummyNum != null" >
+        #{dummyNum,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.liyunet.domain.hk.CoinHkProjetExample" resultType="java.lang.Integer" >
+    select count(*) from coin_hk_projet
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update coin_hk_projet
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectName != null" >
+        project_name = #{record.projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectCycle != null" >
+        project_cycle = #{record.projectCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startTime != null" >
+        start_time = #{record.startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endTime != null" >
+        end_time = #{record.endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.profit != null" >
+        profit = #{record.profit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.minQuota != null" >
+        min_quota = #{record.minQuota,jdbcType=VARCHAR},
+      </if>
+      <if test="record.maxQuota != null" >
+        max_quota = #{record.maxQuota,jdbcType=VARCHAR},
+      </if>
+      <if test="record.profitNum != null" >
+        profit_num = #{record.profitNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.substitutesone != null" >
+        substitutesone = #{record.substitutesone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.substitutestwo != null" >
+        substitutestwo = #{record.substitutestwo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dummyNum != null" >
+        dummy_num = #{record.dummyNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=INTEGER},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update coin_hk_projet
+    set id = #{record.id,jdbcType=INTEGER},
+      project_name = #{record.projectName,jdbcType=VARCHAR},
+      project_cycle = #{record.projectCycle,jdbcType=VARCHAR},
+      start_time = #{record.startTime,jdbcType=VARCHAR},
+      end_time = #{record.endTime,jdbcType=VARCHAR},
+      profit = #{record.profit,jdbcType=VARCHAR},
+      min_quota = #{record.minQuota,jdbcType=VARCHAR},
+      max_quota = #{record.maxQuota,jdbcType=VARCHAR},
+      profit_num = #{record.profitNum,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      substitutesone = #{record.substitutesone,jdbcType=VARCHAR},
+      substitutestwo = #{record.substitutestwo,jdbcType=VARCHAR},
+      dummy_num = #{record.dummyNum,jdbcType=INTEGER},
+      sort = #{record.sort,jdbcType=INTEGER},
+      createtime = #{record.createtime,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.liyunet.domain.hk.CoinHkProjet" >
+    update coin_hk_projet
+    <set >
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectCycle != null" >
+        project_cycle = #{projectCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=VARCHAR},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=VARCHAR},
+      </if>
+      <if test="profit != null" >
+        profit = #{profit,jdbcType=VARCHAR},
+      </if>
+      <if test="minQuota != null" >
+        min_quota = #{minQuota,jdbcType=VARCHAR},
+      </if>
+      <if test="maxQuota != null" >
+        max_quota = #{maxQuota,jdbcType=VARCHAR},
+      </if>
+      <if test="profitNum != null" >
+        profit_num = #{profitNum,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="substitutesone != null" >
+        substitutesone = #{substitutesone,jdbcType=VARCHAR},
+      </if>
+      <if test="substitutestwo != null" >
+        substitutestwo = #{substitutestwo,jdbcType=VARCHAR},
+      </if>
+      <if test="dummyNum != null" >
+        dummy_num = #{dummyNum,jdbcType=INTEGER},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.liyunet.domain.hk.CoinHkProjet" >
+    update coin_hk_projet
+    set project_name = #{projectName,jdbcType=VARCHAR},
+      project_cycle = #{projectCycle,jdbcType=VARCHAR},
+      start_time = #{startTime,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=VARCHAR},
+      profit = #{profit,jdbcType=VARCHAR},
+      min_quota = #{minQuota,jdbcType=VARCHAR},
+      max_quota = #{maxQuota,jdbcType=VARCHAR},
+      profit_num = #{profitNum,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      substitutesone = #{substitutesone,jdbcType=VARCHAR},
+      substitutestwo = #{substitutestwo,jdbcType=VARCHAR},
+      dummy_num = #{dummyNum,jdbcType=INTEGER},
+      sort = #{sort,jdbcType=INTEGER},
+      createtime = #{createtime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  
+  <!-- 新加 -->
+  <!-- 查询所有项目 -->
+  <select id="getHKlist" resultMap="BaseResultMap">
+  select * from coin_hk_projet where state=1 order by sort desc limit #{page},#{rows};
+  </select>
+  
+</mapper>

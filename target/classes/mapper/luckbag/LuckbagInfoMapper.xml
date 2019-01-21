@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liyunet.mapper.luckbagMapper.LuckbagInfoMapper">
+	<resultMap id="BaseResultMap" type="com.liyunet.domain.luckbag.LuckbagInfo">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="bidtnum" property="bidtnum" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="INTEGER" />
+		<result column="bagnum" property="bagnum" jdbcType="INTEGER" />
+		<result column="lbid" property="lbid" jdbcType="INTEGER" />
+		<result column="userId" property="userid" jdbcType="INTEGER" />
+		<result column="createtime" property="createtime" jdbcType="VARCHAR" />
+		<result column="momey" property="momey" jdbcType="VARCHAR" />
+		<result column="substitutesone" property="substitutesone"
+			jdbcType="VARCHAR" />
+		<result column="substitutestwo" property="substitutestwo"
+			jdbcType="VARCHAR" />
+		<result column="orderID" property="orderid" jdbcType="VARCHAR" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="balance" property="balance" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" suffix=")" prefixOverrides="and">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem"
+										open="(" close=")" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		id, bidtnum, type, bagnum, lbid, userId, createtime, momey,
+		substitutesone, substitutestwo,
+		orderID, state, balance
+	</sql>
+	<select id="selectByExample" resultMap="BaseResultMap"
+		parameterType="com.liyunet.domain.luckbag.LuckbagInfoExample">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from luckbag_info
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from luckbag_info
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from luckbag_info
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.liyunet.domain.luckbag.LuckbagInfoExample">
+		delete from luckbag_info
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.liyunet.domain.luckbag.LuckbagInfo" useGeneratedKeys="true" keyProperty="id">
+		insert into luckbag_info (id, bidtnum, type,
+		bagnum, lbid, userId,
+		createtime, momey, substitutesone,
+		substitutestwo, orderID, state,
+		balance)
+		values (#{id,jdbcType=INTEGER}, #{bidtnum,jdbcType=VARCHAR},
+		#{type,jdbcType=INTEGER},
+		#{bagnum,jdbcType=INTEGER}, #{lbid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER},
+		#{createtime,jdbcType=VARCHAR}, #{momey,jdbcType=VARCHAR},
+		#{substitutesone,jdbcType=VARCHAR},
+		#{substitutestwo,jdbcType=VARCHAR}, #{orderid,jdbcType=VARCHAR},
+		#{state,jdbcType=INTEGER},
+		#{balance,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.liyunet.domain.luckbag.LuckbagInfo">
+		insert into luckbag_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="bidtnum != null">
+				bidtnum,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="bagnum != null">
+				bagnum,
+			</if>
+			<if test="lbid != null">
+				lbid,
+			</if>
+			<if test="userid != null">
+				userId,
+			</if>
+			<if test="createtime != null">
+				createtime,
+			</if>
+			<if test="momey != null">
+				momey,
+			</if>
+			<if test="substitutesone != null">
+				substitutesone,
+			</if>
+			<if test="substitutestwo != null">
+				substitutestwo,
+			</if>
+			<if test="orderid != null">
+				orderID,
+			</if>
+			<if test="state != null">
+				state,
+			</if>
+			<if test="balance != null">
+				balance,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="bidtnum != null">
+				#{bidtnum,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=INTEGER},
+			</if>
+			<if test="bagnum != null">
+				#{bagnum,jdbcType=INTEGER},
+			</if>
+			<if test="lbid != null">
+				#{lbid,jdbcType=INTEGER},
+			</if>
+			<if test="userid != null">
+				#{userid,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=VARCHAR},
+			</if>
+			<if test="momey != null">
+				#{momey,jdbcType=VARCHAR},
+			</if>
+			<if test="substitutesone != null">
+				#{substitutesone,jdbcType=VARCHAR},
+			</if>
+			<if test="substitutestwo != null">
+				#{substitutestwo,jdbcType=VARCHAR},
+			</if>
+			<if test="orderid != null">
+				#{orderid,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=INTEGER},
+			</if>
+			<if test="balance != null">
+				#{balance,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.liyunet.domain.luckbag.LuckbagInfoExample"
+		resultType="java.lang.Integer">
+		select count(*) from luckbag_info
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update luckbag_info
+		<set>
+			<if test="record.id != null">
+				id = #{record.id,jdbcType=INTEGER},
+			</if>
+			<if test="record.bidtnum != null">
+				bidtnum = #{record.bidtnum,jdbcType=VARCHAR},
+			</if>
+			<if test="record.type != null">
+				type = #{record.type,jdbcType=INTEGER},
+			</if>
+			<if test="record.bagnum != null">
+				bagnum = #{record.bagnum,jdbcType=INTEGER},
+			</if>
+			<if test="record.lbid != null">
+				lbid = #{record.lbid,jdbcType=INTEGER},
+			</if>
+			<if test="record.userid != null">
+				userId = #{record.userid,jdbcType=INTEGER},
+			</if>
+			<if test="record.createtime != null">
+				createtime = #{record.createtime,jdbcType=VARCHAR},
+			</if>
+			<if test="record.momey != null">
+				momey = #{record.momey,jdbcType=VARCHAR},
+			</if>
+			<if test="record.substitutesone != null">
+				substitutesone = #{record.substitutesone,jdbcType=VARCHAR},
+			</if>
+			<if test="record.substitutestwo != null">
+				substitutestwo = #{record.substitutestwo,jdbcType=VARCHAR},
+			</if>
+			<if test="record.orderid != null">
+				orderID = #{record.orderid,jdbcType=VARCHAR},
+			</if>
+			<if test="record.state != null">
+				state = #{record.state,jdbcType=INTEGER},
+			</if>
+			<if test="record.balance != null">
+				balance = #{record.balance,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update luckbag_info
+		set id = #{record.id,jdbcType=INTEGER},
+		bidtnum = #{record.bidtnum,jdbcType=VARCHAR},
+		type = #{record.type,jdbcType=INTEGER},
+		bagnum = #{record.bagnum,jdbcType=INTEGER},
+		lbid = #{record.lbid,jdbcType=INTEGER},
+		userId = #{record.userid,jdbcType=INTEGER},
+		createtime = #{record.createtime,jdbcType=VARCHAR},
+		momey = #{record.momey,jdbcType=VARCHAR},
+		substitutesone = #{record.substitutesone,jdbcType=VARCHAR},
+		substitutestwo = #{record.substitutestwo,jdbcType=VARCHAR},
+		orderID = #{record.orderid,jdbcType=VARCHAR},
+		state = #{record.state,jdbcType=INTEGER},
+		balance = #{record.balance,jdbcType=VARCHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.liyunet.domain.luckbag.LuckbagInfo">
+		update luckbag_info
+		<set>
+			<if test="bidtnum != null">
+				bidtnum = #{bidtnum,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=INTEGER},
+			</if>
+			<if test="bagnum != null">
+				bagnum = #{bagnum,jdbcType=INTEGER},
+			</if>
+			<if test="lbid != null">
+				lbid = #{lbid,jdbcType=INTEGER},
+			</if>
+			<if test="userid != null">
+				userId = #{userid,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				createtime = #{createtime,jdbcType=VARCHAR},
+			</if>
+			<if test="momey != null">
+				momey = #{momey,jdbcType=VARCHAR},
+			</if>
+			<if test="substitutesone != null">
+				substitutesone = #{substitutesone,jdbcType=VARCHAR},
+			</if>
+			<if test="substitutestwo != null">
+				substitutestwo = #{substitutestwo,jdbcType=VARCHAR},
+			</if>
+			<if test="orderid != null">
+				orderID = #{orderid,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				state = #{state,jdbcType=INTEGER},
+			</if>
+			<if test="balance != null">
+				balance = #{balance,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.liyunet.domain.luckbag.LuckbagInfo">
+		update luckbag_info
+		set bidtnum = #{bidtnum,jdbcType=VARCHAR},
+		type = #{type,jdbcType=INTEGER},
+		bagnum = #{bagnum,jdbcType=INTEGER},
+		lbid = #{lbid,jdbcType=INTEGER},
+		userId = #{userid,jdbcType=INTEGER},
+		createtime = #{createtime,jdbcType=VARCHAR},
+		momey = #{momey,jdbcType=VARCHAR},
+		substitutesone = #{substitutesone,jdbcType=VARCHAR},
+		substitutestwo = #{substitutestwo,jdbcType=VARCHAR},
+		orderID = #{orderid,jdbcType=VARCHAR},
+		state = #{state,jdbcType=INTEGER},
+		balance = #{balance,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<select id="getsendLuckBagHistory" resultMap="BaseResultMap">
+		select * from luckbag_info where userId=#{userId} order by createtime desc
+		limit #{page},#{rows}
+
+	</select>
+	
+	<select id="selectCountByuserId" resultType="Map">
+
+		select SUM(CAST(bidtnum AS DECIMAL(10,1))),count(*) from luckbag_info where userId=#{userId}
+	</select>
+	
+	<select id="selectluckbagBycreatetime" resultMap="BaseResultMap">
+	SELECT * FROM luckbag_info WHERE UNIX_TIMESTAMP( NOW( ) ) - UNIX_TIMESTAMP(createtime) >= 86400 and state=1
+	</select>
+</mapper>

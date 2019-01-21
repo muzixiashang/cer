@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liyunet.mapper.automation.AutomationMapper">
+
+    <sql id="AssociatedAccount_sql">
+        id,uId,userId,AppName,AppUserAccount,createTime,token
+    </sql>
+
+    <sql id="AntiAddiction_SQL">
+        id,userId,userName,identityCard,frontUrl,backUrl,state,rejectReason,createTime,successTime,updateTime,projectName,token,`level`,uId
+    </sql>
+    <sql id="UpdateAntiAddiction_sql">
+        id,antiAddictionId,userName,identityCard,frontUrl,backUrl,state,updateTime,`level`,uId
+    </sql>
+    <sql id="user_info_sql">
+        id,uId,identityCard,blockAddress,userAccount,userPwd,phoneNum,email,headPicPath,createTime
+    </sql>
+    <sql id="UpdateBlockId_sql">
+        id,blockId,createTime,userId
+    </sql>
+    <insert id="saveUpdateAntiAddiction">
+        INSERT INTO update_antiAddiction(<include refid="UpdateAntiAddiction_sql"/>)
+        VALUES (
+        #{id},
+        #{antiAddictionId},
+        #{userName},
+        #{identityCard},
+        #{frontUrl},
+        #{backUrl},
+        #{state},
+        #{updateTime},
+        #{level},
+        #{uId}
+
+        )
+    </insert>
+    <insert id="saveUpdateBlockId">
+        INSERT INTO update_blockId(<include refid="UpdateBlockId_sql"/>)
+        VALUES
+        (
+        #{id},
+        #{blockId},
+        #{createTime},
+        #{userId}
+        )
+
+    </insert>
+    <insert id="saveAssociatedAccount">
+        INSERT INTO associated_account(<include refid="AssociatedAccount_sql"/>)
+        VALUES (
+        #{id},
+        #{uId},
+        #{userId},
+        #{AppName},
+        #{AppUserAccount},
+        #{createTime},
+        #{token}
+        )
+
+    </insert>
+    <insert id="saveUpdateAssociatedAccount">
+        INSERT INTO update_associated_account(<include refid="AssociatedAccount_sql"/>)
+        VALUES (
+        #{id},
+        #{uId},
+        #{userId},
+        #{AppName},
+        #{AppUserAccount},
+        #{createTime},
+        #{token}
+        )
+    </insert>
+    <update id="updateAntiAddiction">
+        UPDATE antiaddiction
+        <set>
+            userName = #{userName},
+            identityCard = #{identityCard},
+            frontUrl = #{frontUrl},
+            backUrl = #{backUrl},
+            state = #{state},
+            updateTime = #{updateTime},
+            `level` = #{level},
+            uId = #{uId}
+
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="updateUserInfo">
+        UPDATE user_info
+        <set>
+            blockAddress = #{blockAddress}
+        </set>
+        WHERE id = #{id}
+    </update>
+    <select id="getAssociatedAccount" resultType="com.liyunet.domain.AssociatedAccount">
+      SELECT <include refid="AssociatedAccount_sql"/>
+      FROM associated_account
+      WHERE AppName = 1
+    </select>
+    <select id="getAntiAddiction" resultType="com.liyunet.domain.AntiAddiction">
+        SELECT <include refid="AntiAddiction_SQL"/>
+        FROM antiaddiction
+        WHERE identityCard = (SELECT identityCard FROM user_info WHERE uId = #{userId} LIMIT 0,1)
+        LIMIT 0,1
+    </select>
+    <select id="getUserInfo" resultType="com.liyunet.domain.UserInfo">
+        SELECT <include refid="user_info_sql"/>
+        FROM user_info
+        WHERE uId = #{userId}
+        LIMIT 0,1
+    </select>
+    <select id="getAssociatedAccountCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM associated_account
+        WHERE userId = #{userId} AND AppName = 2
+
+    </select>
+    <select id="getAssociatedAccountByUserAccount" resultType="com.liyunet.domain.AssociatedAccount">
+        SELECT <include refid="AssociatedAccount_sql"/>
+        FROM associated_account
+        WHERE AppName = 2 AND AppUserAccount = #{username} AND token = #{id}
+        LIMIT 0,1
+    </select>
+    <select id="getAntiAddictionByidentityCard" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM antiaddiction
+        WHERE identityCard = #{identityCard}
+
+    </select>
+</mapper>

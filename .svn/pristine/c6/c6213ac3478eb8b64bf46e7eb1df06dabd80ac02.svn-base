@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liyunet.mapper.hkMapper.CoinHkUserProjectMapper" >
+  <resultMap id="BaseResultMap" type="com.liyunet.domain.hk.CoinHkUserProject" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="profit" property="profit" jdbcType="VARCHAR" />
+    <result column="additional" property="additional" jdbcType="VARCHAR" />
+    <result column="bidt_num" property="bidtNum" jdbcType="DECIMAL" />
+    <result column="profit_num" property="profitNum" jdbcType="VARCHAR" />
+    <result column="createtime" property="createtime" jdbcType="VARCHAR" />
+    <result column="bill_no" property="billNo" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="reason" property="reason" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="payment_date" property="paymentDate" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, pid, profit, additional, bidt_num, profit_num, createtime, bill_no, state, userId, 
+    reason, type, payment_date
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.liyunet.domain.hk.CoinHkUserProjectExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from coin_hk_user_project
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from coin_hk_user_project
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from coin_hk_user_project
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.liyunet.domain.hk.CoinHkUserProjectExample" >
+    delete from coin_hk_user_project
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.liyunet.domain.hk.CoinHkUserProject" >
+    insert into coin_hk_user_project (id, pid, profit, 
+      additional, bidt_num, profit_num, 
+      createtime, bill_no, state, 
+      userId, reason, type, 
+      payment_date)
+    values (#{id,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{profit,jdbcType=VARCHAR}, 
+      #{additional,jdbcType=VARCHAR}, #{bidtNum,jdbcType=DECIMAL}, #{profitNum,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=VARCHAR}, #{billNo,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
+      #{userid,jdbcType=INTEGER}, #{reason,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{paymentDate,jdbcType=VARCHAR})
+  </insert>
+  
+    <insert id="insertSelectKey" parameterType="com.liyunet.domain.hk.CoinHkUserProject" useGeneratedKeys="true" keyProperty="id">
+	
+	 insert into coin_hk_user_project (id, pid, profit, 
+      additional, bidt_num, profit_num, 
+      createtime, bill_no, state, 
+      userId, reason, type, 
+      payment_date)
+    values (#{id,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{profit,jdbcType=VARCHAR}, 
+      #{additional,jdbcType=VARCHAR}, #{bidtNum,jdbcType=DECIMAL}, #{profitNum,jdbcType=VARCHAR}, 
+      #{createtime,jdbcType=VARCHAR}, #{billNo,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
+      #{userid,jdbcType=INTEGER}, #{reason,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, 
+      #{paymentDate,jdbcType=VARCHAR})
+	</insert>
+  
+  
+  <insert id="insertSelective" parameterType="com.liyunet.domain.hk.CoinHkUserProject" >
+    insert into coin_hk_user_project
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="profit != null" >
+        profit,
+      </if>
+      <if test="additional != null" >
+        additional,
+      </if>
+      <if test="bidtNum != null" >
+        bidt_num,
+      </if>
+      <if test="profitNum != null" >
+        profit_num,
+      </if>
+      <if test="createtime != null" >
+        createtime,
+      </if>
+      <if test="billNo != null" >
+        bill_no,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="reason != null" >
+        reason,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="paymentDate != null" >
+        payment_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="profit != null" >
+        #{profit,jdbcType=VARCHAR},
+      </if>
+      <if test="additional != null" >
+        #{additional,jdbcType=VARCHAR},
+      </if>
+      <if test="bidtNum != null" >
+        #{bidtNum,jdbcType=DECIMAL},
+      </if>
+      <if test="profitNum != null" >
+        #{profitNum,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="billNo != null" >
+        #{billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null" >
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="paymentDate != null" >
+        #{paymentDate,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.liyunet.domain.hk.CoinHkUserProjectExample" resultType="java.lang.Integer" >
+    select count(*) from coin_hk_user_project
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update coin_hk_user_project
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.pid != null" >
+        pid = #{record.pid,jdbcType=INTEGER},
+      </if>
+      <if test="record.profit != null" >
+        profit = #{record.profit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.additional != null" >
+        additional = #{record.additional,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bidtNum != null" >
+        bidt_num = #{record.bidtNum,jdbcType=DECIMAL},
+      </if>
+      <if test="record.profitNum != null" >
+        profit_num = #{record.profitNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createtime != null" >
+        createtime = #{record.createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.billNo != null" >
+        bill_no = #{record.billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.userid != null" >
+        userId = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.reason != null" >
+        reason = #{record.reason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=INTEGER},
+      </if>
+      <if test="record.paymentDate != null" >
+        payment_date = #{record.paymentDate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update coin_hk_user_project
+    set id = #{record.id,jdbcType=INTEGER},
+      pid = #{record.pid,jdbcType=INTEGER},
+      profit = #{record.profit,jdbcType=VARCHAR},
+      additional = #{record.additional,jdbcType=VARCHAR},
+      bidt_num = #{record.bidtNum,jdbcType=DECIMAL},
+      profit_num = #{record.profitNum,jdbcType=VARCHAR},
+      createtime = #{record.createtime,jdbcType=VARCHAR},
+      bill_no = #{record.billNo,jdbcType=VARCHAR},
+      state = #{record.state,jdbcType=INTEGER},
+      userId = #{record.userid,jdbcType=INTEGER},
+      reason = #{record.reason,jdbcType=VARCHAR},
+      type = #{record.type,jdbcType=INTEGER},
+      payment_date = #{record.paymentDate,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.liyunet.domain.hk.CoinHkUserProject" >
+    update coin_hk_user_project
+    <set >
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="profit != null" >
+        profit = #{profit,jdbcType=VARCHAR},
+      </if>
+      <if test="additional != null" >
+        additional = #{additional,jdbcType=VARCHAR},
+      </if>
+      <if test="bidtNum != null" >
+        bidt_num = #{bidtNum,jdbcType=DECIMAL},
+      </if>
+      <if test="profitNum != null" >
+        profit_num = #{profitNum,jdbcType=VARCHAR},
+      </if>
+      <if test="createtime != null" >
+        createtime = #{createtime,jdbcType=VARCHAR},
+      </if>
+      <if test="billNo != null" >
+        bill_no = #{billNo,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null" >
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="paymentDate != null" >
+        payment_date = #{paymentDate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.liyunet.domain.hk.CoinHkUserProject" >
+    update coin_hk_user_project
+    set pid = #{pid,jdbcType=INTEGER},
+      profit = #{profit,jdbcType=VARCHAR},
+      additional = #{additional,jdbcType=VARCHAR},
+      bidt_num = #{bidtNum,jdbcType=DECIMAL},
+      profit_num = #{profitNum,jdbcType=VARCHAR},
+      createtime = #{createtime,jdbcType=VARCHAR},
+      bill_no = #{billNo,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      userId = #{userid,jdbcType=INTEGER},
+      reason = #{reason,jdbcType=VARCHAR},
+      type = #{type,jdbcType=INTEGER},
+      payment_date = #{paymentDate,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  	<!-- 新加 -->
+	<!-- 查询总投资 -->
+	<select id="selectCoinCount" resultType="Double">
+	select sum(bidt_num) from coin_hk_user_project where state !=4 and pid=#{id}
+	
+	</select>
+  <select id="selectHKPayList" resultMap="BaseResultMap">
+  
+  SELECT * FROM coin_hk_user_project where userId =#{userId} order by createtime desc limit #{page},#{rows}
+  </select>
+  
+  <!-- 查最新的订单 -->
+  
+  <select id="getUserPaystate" resultMap="BaseResultMap">
+  
+    SELECT * FROM coin_hk_user_project where userId =#{userId} and pid=#{pid} order by createtime desc limit 1
+  
+  
+  </select>
+  
+  <!--查状态是1和6的  -->
+  <select id="getProfitBytoken" resultMap="BaseResultMap">
+    SELECT * FROM coin_hk_user_project where userId =#{userId} and (state=1 or state=6) 
+  
+  </select>
+  
+</mapper>

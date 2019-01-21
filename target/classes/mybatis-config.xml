@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!-- 打印查询语句 -->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+    </settings>
+    <!--<settings>-->
+    <!--<setting name="cacheEnabled" value="true"/>-->
+    <!--</settings>-->
+    <!-- 命名空间 -->
+    <typeAliases>
+        <!--<typeAlias alias="EnumHandler" tycom.sntt.service.common.dao.dao.mybatis.MybatisEnumHandler" />-->
+    </typeAliases>
+
+    <typeHandlers>
+        <!--<typeHandler javaType="java.lang.Enum"-->
+                     <!--handler="org.apache.ibatis.type.EnumTypeHandler"/>-->
+    </typeHandlers>
+
+    <!-- 映射map -->
+    <mappers>
+    </mappers>
+
+</configuration>

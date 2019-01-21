@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.liyunet.mapper.community.PushCommonMapper">
+
+    <sql id="full_cashdeposit_columns">
+        uId,userId,userType,cashDeposit,newCashDeposit,oldCashDeposit,lineOfCredit,createTime,status,reasonRejection,successTime,etH,TxHashNum,applicationType
+    </sql>
+    <sql id="getByCodeSql">
+        <if test="code != null">code_ = #{code}</if>
+    </sql>
+    <sql id="full_Invitation_code_columns">
+        id,code_,create_time,expire_time,used_,account_,`type_`,use_time
+    </sql>
+    <sql id="full_Invitation_code_noid_columns">
+        code_,create_time,expire_time,used_,account_,`type_`,use_time
+    </sql>
+    <sql id="full_chatRecode_info_columns">
+        uId,sayName,userId,times,content,groupInfoId,usetType
+    </sql>
+    <sql id="full_LoginLog_columns">
+        user_id,`date_`,`time_`,`from_`
+    </sql>
+   <sql id="FBTPrice_sql">
+       id,price,createTime
+   </sql>
+    <!--保存绑定手机验证码-->
+    <insert id="saveInvitation_code">
+        INSERT INTO
+        invitation_code(<include refid="full_Invitation_code_noid_columns"/>)
+        VALUES (
+        #{code_},
+        #{create_time},
+        #{expire_time},
+        #{used_},
+        #{account_},
+        #{type_},
+        #{use_time}
+        )
+    </insert>
+
+    <insert id="LoginLog">
+        INSERT INTO `login_log`(<include refid="full_LoginLog_columns"/>)
+        VALUES (
+          #{user_id},
+          #{date_},
+          #{time_},
+          #{from_}
+        )
+    </insert>
+    <insert id="saveFBTPrice">
+        INSERT INTO fbt_price(<include refid="FBTPrice_sql"/>)
+        VALUES (
+        #{id},
+        #{price},
+        #{createTime}
+        )
+    </insert>
+
+
+    <update id="updateInvitationCode">
+        UPDATE invitation_code
+        <set>
+            <if test="used_ != null">used_ = #{used_}</if>
+            <if test="use_time != null">,use_time = #{use_time}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="updateUserInfoForPwd">
+        UPDATE block_user_info
+        <set>
+            pwd_ = #{pwd_}
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="updateFBTPrice">
+        UPDATE fbt_price
+        <set>
+            price = #{price},
+            createTime = #{createTime}
+        </set>
+        WHERE id = #{id}
+    </update>
+    <!--根据昵称查找用户-->
+
+    <!--查询是否存在此验证码-->
+    <select id="getByCode" resultType="java.lang.Integer">
+        SELECT
+        count(code_)
+        FROM
+        invitation_code
+        <where>
+            <include refid="getByCodeSql"/>
+        </where>
+    </select>
+
+
+    <select id="getByCodeByaccount" resultType="com.liyunet.domain.InvitationCode">
+        SELECT
+        <include refid="full_Invitation_code_columns"/>
+        FROM
+        invitation_code
+        <where>
+            <if test="code != null">code_ = #{code}</if>
+            <if test="account != null">AND account_ = #{account}</if>
+        </where>
+
+    </select>
+    <select id="getFBTPrice" resultType="com.liyunet.domain.FBTPrice">
+        SELECT <include refid="FBTPrice_sql"/>
+        FROM fbt_price
+        LIMIT 0,1
+    </select>
+
+
+</mapper>

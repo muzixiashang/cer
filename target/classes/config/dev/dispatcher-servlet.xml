@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+      http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/context 
+      http://www.springframework.org/schema/context/spring-context.xsd
+      http://www.springframework.org/schema/mvc 
+      http://www.springframework.org/schema/mvc/spring-mvc.xsd
+      http://www.springframework.org/schema/aop 
+	  http://www.springframework.org/schema/aop/spring-aop.xsd
+	  http://www.springframework.org/schema/task  
+http://www.springframework.org/schema/task/spring-task-3.1.xsd ">
+<!-- 定时器 -->
+	<!-- 注解扫描包 -->
+	<context:component-scan base-package="com.liyunet.controller"/>
+
+	<!-- 开启MVC注解,表示SpringMVC支持注解功能 做了很多事情，不包括添加自己定义的拦截器 -->
+	<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="true">
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="supportedMediaTypes" value="application/json"/>
+			</bean>
+			<!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg value="UTF-8" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<bean
+			class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" />
+
+	<!-- 启用cglib -->
+	<aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+
+	<!-- 启动注册 找回密码发送邮件队列 -->
+	<bean class="com.liyunet.common.queue.RegPwdEmailListenerBus"
+		  init-method="start"></bean>
+	<!-- 短信验证码发送队列 -->
+	<!--<bean class="com.liyunet.common.queue.SmsListenerBus" init-method="start"></bean>-->
+	<bean class="com.liyunet.common.pushQueue.PushSmsListenerBus" init-method="start"></bean>
+	<bean class="com.liyunet.common.queue.SmsListenerBusPwd" init-method="start"></bean>
+	<!-- 方案二 （二选一） 静态资源映射 -->
+	<mvc:resources location="/static/" mapping="/static/**" />
+
+
+	<!-- 文件上传 -->
+	<bean id="multipartResolver"
+		  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 设置上传文件总大小限制 30M -->
+		<property name="maxUploadSize" value="30000000"></property>
+	</bean>
+	
+	<bean class="com.liyunet.util.SpringTool" />
+
+</beans>  
